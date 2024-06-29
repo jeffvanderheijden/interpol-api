@@ -6,7 +6,7 @@ function getStudentsByGroup($conn, $params) {
         $sql = "SELECT *
             FROM students
             INNER JOIN groups ON students.group_id = groups.id
-            WHERE groups.id = $params[id]";
+            WHERE groups.id = ?";
 
         if ($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("i", $params['id']); // "i" indicates integer type for the parameter
