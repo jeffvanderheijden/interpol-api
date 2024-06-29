@@ -19,9 +19,9 @@ function getStudentsByGroup($conn, $params) {
             }
 
             $stmt->close();
-            return $students;
+            echo json_encode($students);
         } else {
-            return ["error" => "Failed to prepare statement"];
+            echo json_encode(["error" => "Failed to prepare statement"]);
         }
     } else {
         echo json_encode(['error' => 'ID parameter missing']); 
