@@ -34,7 +34,7 @@ function getChallengesByGroupId($conn, $params) {
 
             $challenges = [];
             while ($row = $result->fetch_assoc()) {
-                $students[] = $row;
+                $challenges[] = $row;
             }
 
             $stmt->close();
