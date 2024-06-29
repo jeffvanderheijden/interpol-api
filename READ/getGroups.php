@@ -23,7 +23,6 @@ function getGroups($conn) {
 
 function getGroupsById($conn, $params) {
     if (isset($params['id'])) {
-        echo $params['id'];
         $id = $conn->real_escape_string($params['id']);
         $sql = "SELECT * FROM groups WHERE id = $id";
         $result = $conn->query($sql);

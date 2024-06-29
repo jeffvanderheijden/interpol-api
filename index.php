@@ -9,6 +9,8 @@ header('Content-Type: application/json');
 include 'connection.php';
 // Include the groups functions file
 include 'READ/getGroups.php';
+// Include the students functions file
+include 'READ/getStudents.php';
 
 // Get the request URI and query string
 $request_uri = $_SERVER['REQUEST_URI'];
@@ -16,11 +18,6 @@ $query_string = $_SERVER['QUERY_STRING'];
 
 // Parse the URI to get the route
 $route = parse_url($request_uri, PHP_URL_PATH);
-
-// Debugging: Output received parameters
-error_log("Route: " . $route);
-error_log("Query String: " . $query_string);
-error_log("GET Parameters: " . print_r($_GET, true));
 
 // Handle different routes
 switch ($route) {
@@ -34,6 +31,13 @@ switch ($route) {
     case '/api/group':
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             getGroupsById($conn, $_GET);
+        } else {
+            echo json_encode(['error' => 'Invalid request method']);
+        }
+        break;
+    case '/api/students-by-group':
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            getStudentsByGroup($conn, $_GET);
         } else {
             echo json_encode(['error' => 'Invalid request method']);
         }
