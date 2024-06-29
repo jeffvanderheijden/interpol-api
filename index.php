@@ -46,3 +46,5 @@ switch ($route) {
         echo json_encode(['error' => 'Invalid route']);
         break;
 }
+
+$conn->close();

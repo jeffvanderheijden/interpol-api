@@ -44,5 +44,3 @@ function getStudentsByGroup($conn, $params) {
     //     echo json_encode(['error' => 'ID parameter missing']); 
     // }
 }
-
-$conn->close();
