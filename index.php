@@ -42,6 +42,13 @@ switch ($route) {
             echo json_encode(['error' => 'Invalid request method']);
         }
         break;
+    case '/api/student':
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            getStudentById($conn, $_GET);
+        } else {
+            echo json_encode(['error' => 'Invalid request method']);
+        }
+        break;
     default:
         echo json_encode(['error' => 'Invalid route']);
         break;

@@ -26,3 +26,19 @@ function getStudentsByGroup($conn, $params) {
         echo json_encode(['error' => 'ID parameter missing']); 
     }
 }
+
+function getStudentById($conn, $params) {
+    if (isset($params['id'])) {
+        $id = $conn->real_escape_string($params['id']);
+        $sql = "SELECT * FROM students WHERE id = $id";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            echo json_encode($result->fetch_assoc());
+        } else {
+            echo json_encode(['error' => 'Student not found']);
+        }
+    } else {
+        echo json_encode(['error' => 'ID parameter missing']);  
+    }
+}
