@@ -5,7 +5,6 @@ function getStudentsByGroup($conn, $params) {
     if (isset($params['id'])) {
         $sql = "SELECT *
             FROM students
-            INNER JOIN groups ON students.group_id = groups.id
             WHERE groups.id = ?";
 
         if ($stmt = $conn->prepare($sql)) {
