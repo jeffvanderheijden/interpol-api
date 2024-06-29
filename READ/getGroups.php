@@ -2,9 +2,6 @@
 
 header('Content-Type: application/json');
 
-// Include the database connection file
-include 'connection.php';
-
 function getGroups($conn) {
     $sql = "SELECT * FROM groups";
     $result = $conn->query($sql);

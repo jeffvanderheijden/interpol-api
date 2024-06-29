@@ -2,9 +2,6 @@
 
 header('Content-Type: application/json');
 
-// Include the database connection file
-include 'connection.php';
-
 function getChallenges($conn) {
     $sql = "SELECT * FROM challenges";
     $result = $conn->query($sql);
