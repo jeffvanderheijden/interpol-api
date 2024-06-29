@@ -1,7 +1,5 @@
 <?php
 
-header('Content-Type: application/json');
-
 function getGroups($conn) {
     $sql = "SELECT * FROM groups";
     $result = $conn->query($sql);

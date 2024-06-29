@@ -1,7 +1,5 @@
 <?php
 
-header('Content-Type: application/json');
-
 function getChallenges($conn) {
     $sql = "SELECT * FROM challenges";
     $result = $conn->query($sql);

@@ -1,6 +1,4 @@
 <?php
-
-header('Content-Type: application/json');
 function getStudentsByGroup($conn, $params) {
     if (isset($params['id'])) {
         $sql = "SELECT id, name, student_number
