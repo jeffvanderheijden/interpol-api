@@ -22,7 +22,7 @@ switch ($route) {
             echo json_encode(['error' => 'Invalid request method']);
         }
         break;
-    case '/api/user':
+    case '/api/groups/id':
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             getGroupsById($conn, $_GET);
         } else {
