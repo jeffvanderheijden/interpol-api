@@ -11,6 +11,8 @@ include 'connection.php';
 include 'READ/getGroups.php';
 // Include the students functions file
 include 'READ/getStudents.php';
+// Include the challenges functions file
+include 'READ/getChallenges.php';
 
 // Get the request URI and query string
 $request_uri = $_SERVER['REQUEST_URI'];
@@ -47,6 +49,21 @@ switch ($route) {
     case '/api/student':
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             getStudentById($conn, $_GET);
+        } else {
+            echo json_encode(['error' => 'Invalid request method']);
+        }
+        break;
+    // CHALLENGES
+    case '/api/challenges':
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            getChallenges($conn);
+        } else {
+            echo json_encode(['error' => 'Invalid request method']);
+        }
+        break;
+    case '/api/challenges-by-group':
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            getChallengesByGroupId($conn, $_GET);
         } else {
             echo json_encode(['error' => 'Invalid request method']);
         }
