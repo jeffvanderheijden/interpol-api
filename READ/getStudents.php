@@ -3,9 +3,9 @@ include 'connection.php'; // include your database connection file
 
 function getStudentsByGroup($conn, $params) {
     if (isset($params['id'])) {
-        $sql = "SELECT *
+        $sql = "SELECT id, name, student_number
             FROM students
-            WHERE groups.id = ?";
+            WHERE groups_id = ?";
 
         if ($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("i", $params['id']); // "i" indicates integer type for the parameter
