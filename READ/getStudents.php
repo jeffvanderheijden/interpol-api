@@ -26,7 +26,6 @@ function getStudentsByGroup($conn, $params) {
         echo json_encode(['error' => 'ID parameter missing']); 
     }
 }
-
 function getStudentById($conn, $params) {
     if (isset($params['id'])) {
         $id = $conn->real_escape_string($params['id']);

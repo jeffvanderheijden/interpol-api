@@ -21,6 +21,7 @@ $route = parse_url($request_uri, PHP_URL_PATH);
 
 // Handle different routes
 switch ($route) {
+    // GROUPS
     case '/api/groups':
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             getGroups($conn);
@@ -35,6 +36,7 @@ switch ($route) {
             echo json_encode(['error' => 'Invalid request method']);
         }
         break;
+    // STUDENTS
     case '/api/students-by-group':
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             getStudentsByGroup($conn, $_GET);
