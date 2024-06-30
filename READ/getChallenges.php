@@ -1,5 +1,7 @@
 <?php
-
+// ============================
+// Gets all challenges
+// ============================
 function getChallenges($conn) {
     $sql = "SELECT * FROM challenges";
     $result = $conn->query($sql);
@@ -15,7 +17,9 @@ function getChallenges($conn) {
 
     echo json_encode($challenges);
 }
-
+// ============================
+// Gets challenges by student group ID
+// ============================
 function getChallengesByGroupId($conn, $params) {
     if (isset($params['id'])) {
         $sql = "SELECT *

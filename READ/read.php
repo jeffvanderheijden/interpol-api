@@ -15,6 +15,9 @@ $query_string = $_SERVER['QUERY_STRING'];
 $route = parse_url($request_uri, PHP_URL_PATH);
 
 switch ($route) {
+    case '/api':
+        echo json_encode(['message' => 'Available routes: /api/groups, /api/group, /api/students-by-group, /api/student, /api/challenges, /api/challenges-by-group']);
+        break;
     // GROUPS
     case '/api/groups':
         getGroups($conn);

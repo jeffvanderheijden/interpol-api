@@ -1,5 +1,8 @@
 <?php
 
+// ============================
+// Gets all student groups
+// ============================
 function getGroups($conn) {
     $sql = "SELECT * FROM groups";
     $result = $conn->query($sql);
@@ -15,7 +18,9 @@ function getGroups($conn) {
 
     echo json_encode($groups);
 }
-
+// ============================
+// Gets student groups by ID
+// ============================
 function getGroupsById($conn, $params) {
     if (isset($params['id'])) {
         $id = $conn->real_escape_string($params['id']);

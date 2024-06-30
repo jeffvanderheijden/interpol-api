@@ -1,4 +1,7 @@
 <?php
+// ============================
+// Gets all students in a group by group ID
+// ============================
 function getStudentsByGroup($conn, $params) {
     if (isset($params['id'])) {
         $sql = "SELECT id, name, student_number
@@ -24,6 +27,9 @@ function getStudentsByGroup($conn, $params) {
         echo json_encode(['error' => 'ID parameter missing']); 
     }
 }
+// ============================
+// Gets student by ID
+// ============================
 function getStudentById($conn, $params) {
     if (isset($params['id'])) {
         $id = $conn->real_escape_string($params['id']);
