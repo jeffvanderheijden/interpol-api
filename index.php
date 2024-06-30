@@ -15,9 +15,9 @@ switch ($method) {
     case 'GET':
         include 'READ/read.php';
         break;
-    // case 'POST':
-    //     include 'post.php';
-    //     break;
+    case 'POST':
+        include 'CREATE/create.php';
+        break;
     // case 'PUT':
     //     include 'put.php';
     //     break;
