@@ -12,7 +12,7 @@ $route = parse_url($request_uri, PHP_URL_PATH);
 
 switch ($route) {
     case '/api/create-challenges':
-        createChallenges($conn, $_GET);
+        createChallengesPerGroup($conn, $_GET);
         break;
     default:
         echo json_encode(['error' => 'Invalid route']);

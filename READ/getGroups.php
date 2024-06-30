@@ -13,10 +13,10 @@ function getGroups($conn) {
             $groups[] = $row;
         }
     } else {
-        echo json_encode(['error' => 'No groups found']);
+        return json_encode(['error' => 'No groups found']);
     }
 
-    echo json_encode($groups);
+    return json_encode($groups);
 }
 // ============================
 // Gets student groups by ID
@@ -28,11 +28,11 @@ function getGroupsById($conn, $params) {
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
-            echo json_encode($result->fetch_assoc());
+            return json_encode($result->fetch_assoc());
         } else {
-            echo json_encode(['error' => 'Group not found']);
+            return json_encode(['error' => 'Group not found']);
         }
     } else {
-        echo json_encode(['error' => 'ID parameter missing']);  
+        return json_encode(['error' => 'ID parameter missing']);  
     }
 }

@@ -20,24 +20,24 @@ switch ($route) {
         break;
     // GROUPS
     case '/api/groups':
-        getGroups($conn);
+        echo getGroups($conn);
         break;
     case '/api/group':
-        getGroupsById($conn, $_GET);
+        echo getGroupsById($conn, $_GET);
         break;
     // STUDENTS
     case '/api/students-by-group':
-        getStudentsByGroup($conn, $_GET);
+        echo getStudentsByGroup($conn, $_GET);
         break;
     case '/api/student':
-        getStudentById($conn, $_GET);
+        echo getStudentById($conn, $_GET);
         break;
     // CHALLENGES
     case '/api/challenges':
-        getChallenges($conn);
+        echo getChallenges($conn);
         break;
     case '/api/challenges-by-group':
-        getChallengesByGroupId($conn, $_GET);
+        echo getChallengesByGroupId($conn, $_GET);
         break;
     default:
         echo json_encode(['error' => 'Invalid route']);

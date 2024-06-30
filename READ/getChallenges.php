@@ -12,10 +12,10 @@ function getChallenges($conn) {
             $challenges[] = $row;
         }
     } else {
-        echo json_encode(['error' => 'No challenges found']);
+        return json_encode(['error' => 'No challenges found']);
     }
 
-    echo json_encode($challenges);
+    return json_encode($challenges);
 }
 // ============================
 // Gets challenges by student group ID
@@ -37,11 +37,11 @@ function getChallengesByGroupId($conn, $params) {
             }
 
             $stmt->close();
-            echo json_encode($challenges);
+            return json_encode($challenges);
         } else {
-            echo json_encode(["error" => "Failed to prepare statement"]);
+            return json_encode(["error" => "Failed to prepare statement"]);
         }
     } else {
-        echo json_encode(['error' => 'ID parameter missing']); 
+        return json_encode(['error' => 'ID parameter missing']); 
     }
 }

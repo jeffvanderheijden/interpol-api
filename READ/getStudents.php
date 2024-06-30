@@ -19,12 +19,12 @@ function getStudentsByGroup($conn, $params) {
             }
 
             $stmt->close();
-            echo json_encode($students);
+            return json_encode($students);
         } else {
-            echo json_encode(["error" => "Failed to prepare statement"]);
+            return json_encode(["error" => "Failed to prepare statement"]);
         }
     } else {
-        echo json_encode(['error' => 'ID parameter missing']); 
+        return json_encode(['error' => 'ID parameter missing']); 
     }
 }
 // ============================
@@ -37,11 +37,11 @@ function getStudentById($conn, $params) {
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
-            echo json_encode($result->fetch_assoc());
+            return json_encode($result->fetch_assoc());
         } else {
-            echo json_encode(['error' => 'Student not found']);
+            return json_encode(['error' => 'Student not found']);
         }
     } else {
-        echo json_encode(['error' => 'ID parameter missing']);  
+        return json_encode(['error' => 'ID parameter missing']);  
     }
 }
