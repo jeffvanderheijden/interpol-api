@@ -19,7 +19,7 @@ function generateKey($suffix = null) {
     }
     $tokens = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     $keyString = '';
-    // Build Default License String
+    // Build Default Key String
     for ($i = 0; $i < $num_segments; $i++) {
         $segment = '';
         for ($j = 0; $j < $segment_chars; $j++) {

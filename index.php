@@ -5,6 +5,30 @@ error_reporting(-1);
 
 header('Content-Type: application/json');
 
+// ==========================================
+// DELETE THIS AFTER DEPLOYMENT !!!!!!!!!
+// ==========================================
+
+// Allow from any origin
+header("Access-Control-Allow-Origin: *");
+
+// Allow specific HTTP methods
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+
+// Allow specific headers
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+// Handle preflight requests
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    // Send preflight response
+    http_response_code(204);
+    exit;
+}
+
+// ==========================================
+// END OF DELETE AFTER DEPLOYMENT !!!!!!!!!
+// ==========================================
+
 // Include the database connection file
 include 'connection.php';
 
