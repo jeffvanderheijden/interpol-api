@@ -42,6 +42,33 @@ function getChallengesByGroupId($conn, $params) {
             return json_encode(["error" => "Failed to prepare statement"]);
         }
     } else {
-        return json_encode(['error' => 'ID parameter missing']); 
+        return json_encode(['error' => 'ID parameter missing']);
+    }
+}
+
+// ============================
+// Gets challenges by ID
+// ============================
+function getChallengeById($conn, $params) {
+    if (isset($params['id'])) {
+        $sql = "SELECT * FROM challenges WHERE id = ?";
+
+        if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("i", $params['id']); // "i" indicates integer type for the parameter
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $challenges = [];
+            while ($row = $result->fetch_assoc()) {
+                $challenges[] = $row;
+            }
+
+            $stmt->close();
+            return json_encode($challenges);
+        } else {
+            return json_encode(["error" => "Failed to prepare statement"]);
+        }
+    } else {
+        return json_encode(['error'=> 'ID parameter missing']);
     }
 }

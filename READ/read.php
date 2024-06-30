@@ -38,6 +38,9 @@ switch ($route) {
     case '/api/challenges-by-group':
         echo getChallengesByGroupId($conn, $_GET);
         break;
+    case '/api/challenge-by-id':
+        echo getChallengeById($conn, $_GET);
+        break;
     default:
         echo json_encode(['error' => 'Invalid route']);
         break;
