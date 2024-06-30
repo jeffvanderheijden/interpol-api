@@ -30,8 +30,8 @@ function createChallengesPerGroup($conn, $params) {
             $stmt->execute();
         }
 
-        echo "Records inserted successfully";
+        return "Records inserted successfully";
     } else {
-        echo "Group ID parameter missing";
+        return "Group ID parameter missing";
     }
 }
