@@ -27,6 +27,9 @@ function createTeam($conn, $params) {
 
     // Prepare the SQL statement to prevent SQL injection
     $stmt = $conn->prepare("INSERT INTO groups (name, image_url, class) VALUES (?, ?, ?)");
+    if (!$stmt) {
+        die("Error preparing statement for groups table: " . $conn->error);
+    }
     $stmt->bind_param("sss", $params['name'], $file_path, $params['class']);
 
     // Execute the statement and check for errors
@@ -40,10 +43,20 @@ function createTeam($conn, $params) {
     // Close the statement
     $stmt->close();
 
+    // Decode students JSON once
+    $students = json_decode($params['students'], true);
+
     // Insert multiple student rows with the captured group ID
-    if (!empty(json_decode($params['students'])) && is_array(json_decode($params['students']))) {
+    if (!empty($students) && is_array($students)) {
         $stmt = $conn->prepare("INSERT INTO students (student_name, student_number, group_id) VALUES (?, ?, ?)");
-        foreach (json_decode($params['students']) as $student) {
+        if (!$stmt) {
+            die("Error preparing statement for students table: " . $conn->error);
+        }
+        foreach ($students as $student) {
+            // Check if student data is correctly structured
+            if (!isset($student['name']) || !isset($student['number'])) {
+                die("Error: Student data is incomplete.");
+            }
             $stmt->bind_param("ssi", $student['name'], $student['number'], $group_id);
             if ($stmt->execute() === false) {
                 die("Error inserting data into students table: " . $stmt->error);
