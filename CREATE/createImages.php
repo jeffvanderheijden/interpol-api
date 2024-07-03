@@ -6,9 +6,6 @@ header('Content-Type: application/json');
 // ============================
 function createTeamImage($conn, $params) {
 
-    var_dump($params);
-    die();
-
     // Set the upload directory
     $target_dir = "uploads/";
 
