@@ -5,7 +5,8 @@ header('Content-Type: application/json');
 // Creates team image and uploads to server
 // ============================
 function createTeam($conn, $params) {
-    echo var_dump($params);
+    $response = var_dump($params);
+    echo json_encode($response);
     die();
     if (isset($params['image'])) {
         $base64_image = $params['image'];
