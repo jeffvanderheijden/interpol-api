@@ -24,6 +24,19 @@ function createTeamImage($conn, $params) {
         // Save the decoded image data to a file
         file_put_contents($file_path, $image_data);
 
+        // SQL to insert into groups table
+        $sql = "INSERT INTO groups (image_url) VALUES ('$file_path')";
+
+        if ($conn->query($sql) === TRUE) {
+            // If insertion into database was successful
+            $response = ['status' => 'success', 'filename' => $filename, 'image_url' => $file_path];
+            echo json_encode($response);
+        } else {
+            // If there was an error in inserting into database
+            $response = ['status' => 'error', 'message' => 'Error: ' . $sql . '<br>' . $conn->error];
+            echo json_encode($response);
+        }
+
         // Optionally, you can send a response back to the client indicating success or failure
         echo json_encode(['status' => 'success', 'filename' => $filename]);
     } else {
