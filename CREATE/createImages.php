@@ -23,7 +23,7 @@ function createTeamImage($conn, $params) {
     }
     
     // Check if image data is received
-    $input = file_get_contents('php://input');
+    $input = $params['image'];
     $data = json_decode($input, true);
     
     if (isset($data['image'])) {
