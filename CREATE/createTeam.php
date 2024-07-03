@@ -54,5 +54,3 @@ function createTeam($conn, $params) {
     }
     echo json_encode(['message' => 'Records inserted successfully']);
 }
-
-$conn->close();
