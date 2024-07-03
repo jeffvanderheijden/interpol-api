@@ -5,6 +5,14 @@ header('Content-Type: application/json');
 // Creates team image and uploads to server
 // ============================
 function createTeam($conn, $params) {
+
+    $params = [
+        'name' => $params['name'] ?? null,
+        'class' => $params['class'] ?? null,
+        'image' => $params['image'] ?? null,
+        'students' => json_decode($params['students'], true) ?? [] // Expecting students data as JSON string
+    ];
+
     if (isset($params['image'])) {
         // Save the image
         $base64_image = $params['image'];
@@ -51,8 +59,6 @@ function createTeam($conn, $params) {
         }
         // Close the statement
         $stmt->close();
-    } else {
-        echo $params['students'];
     }
     echo json_encode(['message' => 'Records inserted successfully']);
 }
