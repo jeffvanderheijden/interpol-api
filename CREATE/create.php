@@ -2,7 +2,7 @@
 
 // Include the challenges functions file
 include 'CREATE/createChallenges.php';
-include 'CREATE/createTeams.php';
+include 'CREATE/createTeam.php';
 
 // Get the request URI
 $request_uri = $_SERVER['REQUEST_URI'];
