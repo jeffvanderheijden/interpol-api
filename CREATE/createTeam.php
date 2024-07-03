@@ -36,13 +36,15 @@ function createTeam($conn, $params) {
 
     // Capture the newly created group ID
     $group_id = $conn->insert_id;
-    echo json_encode(['group_id' => $group_id]);
+
+    // Close the statement
+    $stmt->close();
 
     // Insert multiple student rows with the captured group ID
     if (!empty($params['students']) && is_array($params['students'])) {
         $stmt = $conn->prepare("INSERT INTO students (student_name, student_number, group_id) VALUES (?, ?, ?)");
         foreach ($params['students'] as $student) {
-            $stmt->bind_param("iss", $student['name'], $student['number'], $group_id);
+            $stmt->bind_param("ssi", $student['name'], $student['number'], $group_id);
             if ($stmt->execute() === false) {
                 die("Error inserting data into students table: " . $stmt->error);
             }
@@ -50,6 +52,7 @@ function createTeam($conn, $params) {
         // Close the statement
         $stmt->close();
     }
+    echo json_encode(['message' => 'Records inserted successfully']);
 }
 
 $conn->close();
