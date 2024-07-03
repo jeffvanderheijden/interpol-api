@@ -1,10 +1,13 @@
 <?php 
+header('Content-Type: application/json');
 
 // ============================
 // Creates team image and uploads to server
 // ============================
 function createTeamImage($conn, $params) {
-    header('Content-Type: application/json');
+
+    var_dump($params);
+    die();
 
     // Set the upload directory
     $target_dir = "uploads/";
@@ -20,7 +23,7 @@ function createTeamImage($conn, $params) {
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
     // Check if image file is a actual image or fake image
-    if(isset($_POST["submit"])) {
+    if(isset($params["submit"])) {
         $check = getimagesize($_FILES["image"]["tmp_name"]);
         if($check !== false) {
             $uploadOk = 1;
