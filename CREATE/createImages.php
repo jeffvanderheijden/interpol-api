@@ -61,6 +61,6 @@ function createTeamImage($conn, $params) {
             }
         }
     } else {
-        return "Missing parameters to create student record.";
+        return "Missing image data.";
     }
 }
