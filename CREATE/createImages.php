@@ -19,7 +19,7 @@ function createTeamImage($conn, $params) {
         $filename = uniqid() . '.png';
 
         // Specify the file path where you want to save the image
-        $file_path = '/uploads/' . $filename;
+        $file_path = 'uploads/' . $filename;
 
         // Save the decoded image data to a file
         file_put_contents($file_path, $image_data);
