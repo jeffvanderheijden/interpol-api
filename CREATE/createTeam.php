@@ -36,9 +36,7 @@ function createTeam($conn, $params) {
 
     // Capture the newly created group ID
     $group_id = $conn->insert_id;
-
-    // Close the statement
-    $stmt->close();
+    echo json_encode(['group_id' => $group_id]);
 
     // Insert multiple student rows with the captured group ID
     if (!empty($params['students']) && is_array($params['students'])) {
