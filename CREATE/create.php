@@ -14,8 +14,8 @@ switch ($route) {
     case '/api/create-challenges':
         echo createChallengesPerGroup($conn, $_POST);
         break;
-    case '/api/upload-team-image':
-        echo createTeamImage($conn, $_POST);
+    case '/api/create-team':
+        echo createTeam($conn, $_POST);
         break;
     default:
         echo json_encode(['error' => 'Invalid route']);
