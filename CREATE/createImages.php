@@ -6,57 +6,36 @@ header('Content-Type: application/json');
 // ============================
 function createTeamImage($conn, $params) {
 
+    function saveBase64Image($base64ImageString, $outputFile) {
+        $data = explode(',', $base64ImageString);
+        $encodedData = $data[1];
+    
+        $decodedImage = base64_decode($encodedData);
+        file_put_contents($outputFile, $decodedImage);
+    }
+    
     // Set the upload directory
     $target_dir = "uploads/";
-
+    
     // Ensure the uploads directory exists
     if (!file_exists($target_dir)) {
         mkdir($target_dir, 0777, true);
     }
-
-    // Get the file from the request
-    $target_file = $target_dir . basename($params["image"]);
-    $uploadOk = 1;
-    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-    // Check if image file is a actual image or fake image
-    if(isset($params["submit"])) {
-        $check = getimagesize($params["image"]["tmp_name"]);
-        if($check !== false) {
-            $uploadOk = 1;
-        } else {
-            echo json_encode(['message' => 'File is not an image.']);
-            $uploadOk = 0;
-        }
-    }
-
-    // Check if file already exists
-    if (file_exists($target_file)) {
-        echo json_encode(['message' => 'Sorry, file already exists.']);
-        $uploadOk = 0;
-    }
-
-    // Check file size (limit to 5MB)
-    if ($params["image"]["size"] > 5000000) {
-        echo json_encode(['message' => 'Sorry, your file is too large.']);
-        $uploadOk = 0;
-    }
-
-    // Allow certain file formats
-    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
-        echo json_encode(['message' => 'Sorry, only JPG, JPEG, PNG & GIF files are allowed.']);
-        $uploadOk = 0;
-    }
-
-    // Check if $uploadOk is set to 0 by an error
-    if ($uploadOk == 0) {
-        echo json_encode(['message' => 'Sorry, your file was not uploaded.']);
-    // if everything is ok, try to upload file
+    
+    // Check if image data is received
+    $input = file_get_contents('php://input');
+    $data = json_decode($input, true);
+    
+    if (isset($data['image'])) {
+        // Generate a unique file name
+        $filename = uniqid() . '.png';
+        $target_file = $target_dir . $filename;
+    
+        // Save the base64 encoded image data to file
+        saveBase64Image($data['image'], $target_file);
+    
+        echo json_encode(['message' => 'Image uploaded successfully.', 'file' => $filename]);
     } else {
-        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            echo json_encode(['message' => 'The file '. htmlspecialchars(basename($_FILES["image"]["name"])). ' has been uploaded.']);
-        } else {
-            echo json_encode(['message' => 'Sorry, there was an error uploading your file.']);
-        }
+        echo json_encode(['message' => 'No image data received.']);
     }
 }
