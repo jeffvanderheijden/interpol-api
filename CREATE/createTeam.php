@@ -6,16 +6,16 @@ header('Content-Type: application/json');
 // ============================
 function createTeam($conn, $params) {
 
-    $params = [
+    $convertedParams = [
         'name' => $params['name'] ?? null,
         'class' => $params['class'] ?? null,
         'image' => $params['image'] ?? null,
         'students' => json_decode($params['students'], true) ?? [] // Expecting students data as JSON string
     ];
 
-    if (isset($params['image'])) {
+    if (isset($convertedParams['image'])) {
         // Save the image
-        $base64_image = $params['image'];
+        $base64_image = $convertedParams['image'];
         $base64_image = str_replace('data:image/png;base64,', '', $base64_image);
         $image_data = base64_decode($base64_image);
         $filename = uniqid() . '.png';
@@ -35,7 +35,7 @@ function createTeam($conn, $params) {
 
     // Prepare the SQL statement to prevent SQL injection
     $stmt = $conn->prepare("INSERT INTO groups (name, image_url, class) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $params['name'], $file_path, $params['class']);
+    $stmt->bind_param("sss", $convertedParams['name'], $file_path, $convertedParams['class']);
 
     // Execute the statement and check for errors
     if ($stmt->execute() === false) {
@@ -49,9 +49,9 @@ function createTeam($conn, $params) {
     $stmt->close();
 
     // Insert multiple student rows with the captured group ID
-    if (!empty($params['students']) && is_array($params['students'])) {
+    if (!empty($convertedParams['students']) && is_array($convertedParams['students'])) {
         $stmt = $conn->prepare("INSERT INTO students (student_name, student_number, group_id) VALUES (?, ?, ?)");
-        foreach ($params['students'] as $student) {
+        foreach ($convertedParams['students'] as $student) {
             $stmt->bind_param("ssi", $student['name'], $student['number'], $group_id);
             if ($stmt->execute() === false) {
                 die("Error inserting data into students table: " . $stmt->error);
