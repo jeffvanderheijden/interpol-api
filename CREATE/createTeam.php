@@ -31,9 +31,27 @@ function createTeam($conn, $params) {
 
     // Execute the statement and check for errors
     if ($stmt->execute() === false) {
-        die("Error inserting data: " . $stmt->error);
+        die("Error inserting data into groups table: " . $stmt->error);
     }
+
+    // Capture the newly created group ID
+    $group_id = $conn->insert_id;
 
     // Close the statement
     $stmt->close();
+
+    // Insert multiple student rows with the captured group ID
+    if (!empty($params['students']) && is_array($params['students'])) {
+        $stmt = $conn->prepare("INSERT INTO students (group_id, student_name, student_number) VALUES (?, ?, ?)");
+        foreach ($params['students'] as $student) {
+            $stmt->bind_param("iss", $group_id, $student['name'], $student['number']);
+            if ($stmt->execute() === false) {
+                die("Error inserting data into students table: " . $stmt->error);
+            }
+        }
+        // Close the statement
+        $stmt->close();
+    }
 }
+
+$conn->close();
