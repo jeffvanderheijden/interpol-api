@@ -51,6 +51,8 @@ function createTeam($conn, $params) {
         }
         // Close the statement
         $stmt->close();
+    } else {
+        echo $params['students'];
     }
     echo json_encode(['message' => 'Records inserted successfully']);
 }
