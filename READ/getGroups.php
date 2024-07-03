@@ -10,6 +10,12 @@ function getGroups($conn) {
     $groups = [];
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
+            // Fetch image data if image_url is provided
+            if (!empty($row['image_url'])) {
+                $imagePath = 'uploads/' . $row['image_url'];
+                $imageData = base64_encode(file_get_contents($imagePath));
+                $row['image_data'] = $imageData;
+            }
             $groups[] = $row;
         }
     } else {
