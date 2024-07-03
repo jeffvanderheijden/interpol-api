@@ -48,7 +48,7 @@ function createTeam($conn, $params) {
 
     // Insert multiple student rows with the captured group ID
     if (!empty($students) && is_array($students)) {
-        $stmt = $conn->prepare("INSERT INTO students (student_name, student_number, group_id) VALUES (?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO students (name, student_number, group_id) VALUES (?, ?, ?)");
         if (!$stmt) {
             die("Error preparing statement for students table: " . $conn->error);
         }
