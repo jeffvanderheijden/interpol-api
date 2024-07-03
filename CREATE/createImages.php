@@ -18,13 +18,13 @@ function createTeamImage($conn, $params) {
     }
 
     // Get the file from the request
-    $target_file = $target_dir . basename($_FILES["image"]["name"]);
+    $target_file = $target_dir . basename($params["image"]);
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
     // Check if image file is a actual image or fake image
     if(isset($params["submit"])) {
-        $check = getimagesize($_FILES["image"]["tmp_name"]);
+        $check = getimagesize($params["image"]["tmp_name"]);
         if($check !== false) {
             $uploadOk = 1;
         } else {
@@ -40,7 +40,7 @@ function createTeamImage($conn, $params) {
     }
 
     // Check file size (limit to 5MB)
-    if ($_FILES["image"]["size"] > 5000000) {
+    if ($params["image"]["size"] > 5000000) {
         echo json_encode(['message' => 'Sorry, your file is too large.']);
         $uploadOk = 0;
     }
