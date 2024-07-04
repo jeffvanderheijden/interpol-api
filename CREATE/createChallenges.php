@@ -6,8 +6,8 @@ include '_helpers/generateKey.php';
 // Creates all challenges for a student group with generated keys
 // ============================
 function createChallengesPerGroup($conn, $params) {
-    if (isset($params['group_id'])) {
-        $groupId = $params['group_id'];
+    if (isset($params)) {
+        $groupId = $params;
         // Fetch all challenge IDs
         $challengeIds = [];
         $result = $conn->query("SELECT id FROM challenges");
