@@ -65,5 +65,8 @@ function createTeam($conn, $params) {
         // Close the statement
         $stmt->close();
     }
+
+    createChallengesPerGroup($conn, $group_id);
+
     echo json_encode(['message' => 'Records inserted successfully']);
 }

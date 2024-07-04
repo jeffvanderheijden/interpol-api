@@ -35,7 +35,3 @@ function createChallengesPerGroup($conn, $params) {
         return "Group ID parameter missing";
     }
 }
-
-function createGroup($conn, $params) {
-    //
-}
