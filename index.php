@@ -1,13 +1,14 @@
 <?php
-ini_set('display_startup_errors', 1);
-ini_set('display_errors', 1);
-error_reporting(-1);
 
 header('Content-Type: application/json');
 
 // ==========================================
 // DELETE THIS AFTER DEPLOYMENT !!!!!!!!!
 // ==========================================
+
+ini_set('display_startup_errors', 1);
+ini_set('display_errors', 1);
+error_reporting(-1);
 
 // Allow from any origin
 header("Access-Control-Allow-Origin: *");
