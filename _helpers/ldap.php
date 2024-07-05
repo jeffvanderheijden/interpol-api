@@ -6,7 +6,7 @@ function ldap($gebruikersnaam, $wachtwoord) {
     $ldapconn = ldap_connect("145.118.4.6");
     if ($ldapconn == false) {
         @$_SESSION["inlogError"] = "error";
-        return json_encode(['error' => 'LDAP testing error']);
+        return json_encode(['error' => 'LDAP connection testing error']);
     }
 
     if ($ldapconn) {
@@ -23,13 +23,12 @@ function ldap($gebruikersnaam, $wachtwoord) {
     }
 
     if ($inloggen == "ok") {
-        //$filter DOCENTEN -> wordt in beroeps niet gebruikt
+        //$filter DOCENTEN
         $filter = "(samaccountname=$gebruikersnaam)";
         $ldaprdn = 'ou=docenten,dc=ict,dc=lab,dc=locals'; // ldap rdn or dn
         $sr=ldap_search($ldapconn, $ldaprdn, $filter);
         $info = ldap_get_entries($ldapconn, $sr);
-        if ($info["count"]==1) {
-            return json_encode(['message' => $info[count($info) -1]]); 
+        if ($info["count"] == 1) {
             @$_SESSION["inlogError"] = "";
             @$_SESSION['login'] = true;
             @$_SESSION["ingelogdAls"] = "DOCENT";
@@ -41,18 +40,17 @@ function ldap($gebruikersnaam, $wachtwoord) {
         } else {
             //$filter STUDENTEN
             $filter = "(samaccountname=$gebruikersnaam)";
-            $ldaprdn = 'ou=glr_studenten,dc=ict,dc=lab,dc=locals';    // ldap rdn or dn
+            $ldaprdn = 'ou=glr_studenten,dc=ict,dc=lab,dc=locals'; // ldap rdn or dn
             $sr = ldap_search($ldapconn, $ldaprdn, $filter);
             $info = ldap_get_entries($ldapconn, $sr);
 
-            if ($info["count"]==1) {
+            if ($info["count"] == 1) {
                 require_once ('connect.php');
                 $query = "SELECT stuNr, ID_groep, voornaam, tussenvoegsel, achternaam, klas FROM STUDENT WHERE stuNr = '$gebruikersnaam'";
     //          echo "<p>$query</p>";
                 $result = mysqli_query($con, $query);
                 $row = mysqli_fetch_assoc($result);
-                if (!empty($row['stuNr']))
-                {
+                if (!empty($row['stuNr'])) {
                     $query = "SELECT groepsnaam FROM GROEP WHERE ID='$row[ID_groep]'";
     //              echo "<p>$query</p>";
                     $result = mysqli_query($con, $query);
@@ -69,14 +67,6 @@ function ldap($gebruikersnaam, $wachtwoord) {
                     @$_SESSION['tussenvoegsel'] = $row['tussenvoegsel'];
                     @$_SESSION['achternaam'] = $row['achternaam'];
                     @$_SESSION['klas'] = $row['klas'];
-
-
-                    /* DEBUG */
-                    if ($gebruikersnaam == '23444' && isset($_GET['ID_groep'])) {
-                        @$_SESSION['ID_groep'] = $_GET['ID_groep'];
-                        echo "<h1>Debug groep $_SESSION[ID_groep] is ingeschakeld</h1>";
-                    }
-
                 }
                 else { echo 'Geen 1e jaars student...'; }
     //            echo "<pre>"; print_r($info); echo "</pre>";
@@ -91,17 +81,11 @@ function ldap($gebruikersnaam, $wachtwoord) {
             }
             else {
                 @$_SESSION["inlogError"] = "error";
-                echo 'Geen docent of student van het glr';
-    //        header('Location: '.$this->rootURL);
-
+                return json_encode('error', 'Geen docent of student van het glr');
             }
         }
-
-
-    }
-    else {
+    } else {
         @$_SESSION["inlogError"] = "error";
-    //    echo 'probleem2';
-    //    header('Location: '.$this->rootURL);
+        return json_encode('error', 'LDAP binding error');
     }
 }
