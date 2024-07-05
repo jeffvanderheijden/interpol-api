@@ -16,11 +16,13 @@ function ldap($gebruikersnaam, $wachtwoord) {
         // Verify binding
         if (($ldapbind) && ($wachtwoord <>"")) {
             $inloggen = "ok";
+            return json_encode(['message' => 'LDAP binding successful']);
         } else {
             $inloggen = "fout";
+            return json_encode(['error' => 'LDAP binding error']);
         }
     }
-
+    die();
     if ($inloggen == "ok") {
         //$filter DOCENTEN
         $filter = "(samaccountname=$gebruikersnaam)";
@@ -28,7 +30,6 @@ function ldap($gebruikersnaam, $wachtwoord) {
         $sr = ldap_search($ldapconn, $ldaprdn, $filter);
         $info = ldap_get_entries($ldapconn, $sr);
         if ($info["count"] == 1) {
-            return json_encode('message', 'Inloggen gelukt');
             @$_SESSION["inlogError"] = "";
             @$_SESSION['login'] = true;
             @$_SESSION["ingelogdAls"] = "DOCENT";
