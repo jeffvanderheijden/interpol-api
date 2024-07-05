@@ -6,8 +6,6 @@ include 'READ/getGroups.php';
 include 'READ/getStudents.php';
 // Include the challenges functions file
 include 'READ/getChallenges.php';
-// Include the login functions file
-include 'READ/getLogin.php';
 
 // Get the request URI
 $request_uri = $_SERVER['REQUEST_URI'];
@@ -18,10 +16,6 @@ $route = parse_url($request_uri, PHP_URL_PATH);
 switch ($route) {
     case '/api':
         echo json_encode(['welcome' => 'Available routes: /api/groups, /api/group, /api/students-by-group, /api/student, /api/challenges, /api/challenges-by-group']);
-        break;
-     // LOGIN 
-    case '/api/login':
-        echo login($conn, $_POST);
         break;
     // GROUPS
     case '/api/groups':
