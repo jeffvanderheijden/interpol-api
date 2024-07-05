@@ -1,8 +1,8 @@
 <?php
 // Database credentials
 $servername = "localhost";
-$username = "interpol";
-$password = "Bps_0t762";
+$username = "jeffinterpol";
+$password = "4mkf?890W";
 $dbname = "interpol";
 
 // Create connection
