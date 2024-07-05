@@ -4,7 +4,6 @@
 function ldap($gebruikersnaam, $wachtwoord) {
     // LDAP test
     $ldapconn = ldap_connect("145.118.4.6");
-    return json_encode("LDAP connection successful");
     if ($ldapconn == false) {
         @$_SESSION["inlogError"] = "error";
         return json_encode(['error' => 'LDAP connection testing error']);
@@ -17,10 +16,8 @@ function ldap($gebruikersnaam, $wachtwoord) {
         // Verify binding
         if (($ldapbind) && ($wachtwoord <>"")) {
             $inloggen = "ok";
-            return json_encode(['message' => 'LDAP binding successful']);
         } else {
             $inloggen = "fout";
-            return json_encode(['error' => 'LDAP binding error']);
         }
     }
     die();
