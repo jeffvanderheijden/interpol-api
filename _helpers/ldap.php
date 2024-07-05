@@ -1,7 +1,7 @@
 <?php
 // session_start();
 
-function ldap($gebruikersnaam, $wachtwoord) {
+function ldap($conn, $gebruikersnaam, $wachtwoord) {
     // LDAP test
     $ldapconn = ldap_connect("145.118.4.6");
     if ($ldapconn == false) {
@@ -20,7 +20,7 @@ function ldap($gebruikersnaam, $wachtwoord) {
             $inloggen = "fout";
         }
     }
-    die();
+
     if ($inloggen == "ok") {
         //$filter DOCENTEN
         $filter = "(samaccountname=$gebruikersnaam)";
@@ -33,6 +33,7 @@ function ldap($gebruikersnaam, $wachtwoord) {
             @$_SESSION["ingelogdAls"] = "DOCENT";
             @$_SESSION["inlogDocent"] = $gebruikersnaam;
             @$_SESSION["mail"] = @$info[0]['mail'][0];
+            return json_encode('ok', 'Docent ingelogd');
         } else {
             //$filter STUDENTEN
             $filter = "(samaccountname=$gebruikersnaam)";
