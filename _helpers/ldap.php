@@ -1,9 +1,10 @@
 <?php
-session_start();
+// session_start();
 
 function ldap($gebruikersnaam, $wachtwoord) {
     // LDAP test
     $ldapconn = ldap_connect("145.118.4.6");
+    return json_encode("LDAP connection successful");
     if ($ldapconn == false) {
         @$_SESSION["inlogError"] = "error";
         return json_encode(['error' => 'LDAP connection testing error']);
