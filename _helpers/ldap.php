@@ -28,34 +28,31 @@ function ldap($gebruikersnaam, $wachtwoord) {
         $sr = ldap_search($ldapconn, $ldaprdn, $filter);
         $info = ldap_get_entries($ldapconn, $sr);
         if ($info["count"] == 1) {
+            return json_encode('message', 'Inloggen gelukt');
             @$_SESSION["inlogError"] = "";
             @$_SESSION['login'] = true;
             @$_SESSION["ingelogdAls"] = "DOCENT";
             @$_SESSION["inlogDocent"] = $gebruikersnaam;
             @$_SESSION["mail"] = @$info[0]['mail'][0];
-            return json_encode('ok', 'Docent ingelogd');
-    //        $_SESSION["huidigWW"] = $wachtwoord;
-    //        echo 'docent : '. $_SESSION["mail"];
-    //        header('Location: '.$this->rootURL.'overzicht/student');
         } else {
             //$filter STUDENTEN
             $filter = "(samaccountname=$gebruikersnaam)";
             $ldaprdn = 'ou=glr_studenten,dc=ict,dc=lab,dc=locals'; // ldap rdn or dn
             $sr = ldap_search($ldapconn, $ldaprdn, $filter);
             $info = ldap_get_entries($ldapconn, $sr);
-
             if ($info["count"] == 1) {
-                require_once ('connect.php');
+                require_once ('connection.php');
+                // TODO Rewrite query
                 $query = "SELECT stuNr, ID_groep, voornaam, tussenvoegsel, achternaam, klas FROM STUDENT WHERE stuNr = '$gebruikersnaam'";
     //          echo "<p>$query</p>";
                 $result = mysqli_query($con, $query);
                 $row = mysqli_fetch_assoc($result);
                 if (!empty($row['stuNr'])) {
+                    // TODO Rewrite query
                     $query = "SELECT groepsnaam FROM GROEP WHERE ID='$row[ID_groep]'";
     //              echo "<p>$query</p>";
                     $result = mysqli_query($con, $query);
                     $row2 = mysqli_fetch_assoc($result);
-                    $error = false;
                     @$_SESSION["inlogError"] = "";
                     @$_SESSION['login'] = true;
                     @$_SESSION['ingelogdAls'] = 'STUDENT';
@@ -68,16 +65,7 @@ function ldap($gebruikersnaam, $wachtwoord) {
                     @$_SESSION['achternaam'] = $row['achternaam'];
                     @$_SESSION['klas'] = $row['klas'];
                 }
-                else { echo 'Geen 1e jaars student...'; }
-    //            echo "<pre>"; print_r($info); echo "</pre>";
-
-    //            $_SESSION['login'] = true;
-    //            $_SESSION["ingelogdAls"] = "STUDENT";
-    //            $_SESSION["inlogStudent"] = $gebruikersnaam;
-    //        $_SESSION["huidigWW"] = $wachtwoord;
-    //            echo 'student';
-    //        header('Location: '.$this->rootURL.'overzicht/student');
-                return;
+                return json_encode('error', 'Geen 1e jaars student...');
             }
             else {
                 @$_SESSION["inlogError"] = "error";
