@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "jeffinterpol";
 $password = "4mkf?890W";
-$dbname = "interpol";
+$dbname = "interpol-api";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
