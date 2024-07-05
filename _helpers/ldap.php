@@ -13,7 +13,6 @@ function ldap($gebruikersnaam, $wachtwoord) {
         // Binding to ldap server
         $inlognaam = $gebruikersnaam."@ict.lab.locals";
         $ldapbind = ldap_bind($ldapconn, $inlognaam, $wachtwoord);
-
         // Verify binding
         if (($ldapbind) && ($wachtwoord <>"")) {
             $inloggen = "ok";
@@ -25,8 +24,8 @@ function ldap($gebruikersnaam, $wachtwoord) {
     if ($inloggen == "ok") {
         //$filter DOCENTEN
         $filter = "(samaccountname=$gebruikersnaam)";
-        $ldaprdn = 'ou=docenten,dc=ict,dc=lab,dc=locals'; // ldap rdn or dn
-        $sr=ldap_search($ldapconn, $ldaprdn, $filter);
+        $ldaprdn = "ou=docenten,dc=ict,dc=lab,dc=locals"; // ldap rdn or dn
+        $sr = ldap_search($ldapconn, $ldaprdn, $filter);
         $info = ldap_get_entries($ldapconn, $sr);
         if ($info["count"] == 1) {
             @$_SESSION["inlogError"] = "";
@@ -34,6 +33,7 @@ function ldap($gebruikersnaam, $wachtwoord) {
             @$_SESSION["ingelogdAls"] = "DOCENT";
             @$_SESSION["inlogDocent"] = $gebruikersnaam;
             @$_SESSION["mail"] = @$info[0]['mail'][0];
+            return json_encode('ok', 'Docent ingelogd');
     //        $_SESSION["huidigWW"] = $wachtwoord;
     //        echo 'docent : '. $_SESSION["mail"];
     //        header('Location: '.$this->rootURL.'overzicht/student');
