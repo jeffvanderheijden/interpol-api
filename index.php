@@ -11,7 +11,7 @@ error_reporting(-1);
 header('Content-Type: application/json');
 
 // Allow from any origin
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: .interpol.sd-lab.nl");
 
 // Allow specific HTTP methods
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
