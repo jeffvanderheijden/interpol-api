@@ -22,6 +22,9 @@ switch ($route) {
     case '/api/create-team':
         echo createTeam($conn, $_POST);
         break;
+    case '/api/logout':
+        echo destroySession();
+        break;
     default:
         echo json_encode(['error' => 'Invalid route']);
         break;
