@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 session_start();
 
 function ldap($conn, $gebruikersnaam, $wachtwoord) {
@@ -6,7 +7,8 @@ function ldap($conn, $gebruikersnaam, $wachtwoord) {
     $ldapconn = ldap_connect("145.118.4.6");
     if (!$ldapconn) {
         $_SESSION["inlogError"] = "error";
-        return json_encode(['error' => 'LDAP connection testing error']);
+        echo json_encode(['error' => 'LDAP connection testing error']);
+        return;
     }
 
     // Initialize inloggen variable
@@ -36,12 +38,11 @@ function ldap($conn, $gebruikersnaam, $wachtwoord) {
             $_SESSION["ingelogdAls"] = "DOCENT";
             $_SESSION["inlogDocent"] = $gebruikersnaam;
             $_SESSION["mail"] = $info[0]['mail'][0] ?? '';
-            return json_encode(['message' => 'Docent ingelogd']);
-        } else {
-            return json_encode(['error' => 'Docent niet gevonden of niet ingelogd']);
+            echo json_encode(['message' => 'Docent ingelogd']);
+            return;
         }
-    } else {
-        $_SESSION["inlogError"] = "error";
-        return json_encode(['error' => 'LDAP binding error']);
     }
+
+    $_SESSION["inlogError"] = "error";
+    echo json_encode(['error' => 'LDAP binding error']);
 }
