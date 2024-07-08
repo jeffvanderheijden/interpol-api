@@ -14,7 +14,7 @@ $route = parse_url($request_uri, PHP_URL_PATH);
 switch ($route) {
     // LOGIN 
     case '/api/create-session':
-        echo createSession($conn, $_POST);
+        echo createSession($_POST);
         break;
     case '/api/create-challenges':
         echo createChallengesPerGroup($conn, $_POST);
