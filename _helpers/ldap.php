@@ -37,6 +37,8 @@ function ldap($conn, $gebruikersnaam, $wachtwoord) {
             $_SESSION["inlogDocent"] = $gebruikersnaam;
             $_SESSION["mail"] = $info[0]['mail'][0] ?? '';
             return json_encode(['message' => 'Docent ingelogd']);
+        } else {
+            return json_encode(['error' => 'Docent niet gevonden of niet ingelogd']);
         }
     } else {
         $_SESSION["inlogError"] = "error";
