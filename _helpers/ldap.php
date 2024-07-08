@@ -28,7 +28,6 @@ function ldap($conn, $gebruikersnaam, $wachtwoord) {
         $sr = ldap_search($ldapconn, $ldaprdn, $filter);
         $info = ldap_get_entries($ldapconn, $sr);
         if ($info["count"] == 1) {
-            return print_r($info);
             @$_SESSION["inlogError"] = "";
             @$_SESSION['login'] = true;
             @$_SESSION["ingelogdAls"] = "DOCENT";
