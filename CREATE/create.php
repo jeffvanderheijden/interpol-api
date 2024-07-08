@@ -4,6 +4,7 @@
 include 'CREATE/createSession.php';
 include 'CREATE/createChallenges.php';
 include 'CREATE/createTeam.php';
+include 'CREATE/destroySession.php';
 
 // Get the request URI
 $request_uri = $_SERVER['REQUEST_URI'];
