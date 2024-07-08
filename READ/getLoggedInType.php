@@ -1,6 +1,10 @@
 <?php
+
+session_start();
+
 function getLoggedInType() {
    // Endpoint to check session and return session data
+    echo json_encode($_SESSION);
     if (isset($_SESSION['ingelogdAls']) && $_SESSION['ingelogdAls'] == 'DOCENT') {
         echo true;
     } else {
