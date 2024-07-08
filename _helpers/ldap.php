@@ -1,8 +1,20 @@
 <?php
 header('Content-Type: application/json');
+
+// Configure session cookie parameters
+$cookieParams = session_get_cookie_params();
+$cookieParams['domain'] = '.interpol.sd-lab.nl'; // Set cookie domain to include all subdomains
+session_set_cookie_params(
+    $cookieParams['lifetime'],
+    $cookieParams['path'],
+    $cookieParams['domain'],
+    $cookieParams['secure'],
+    $cookieParams['httponly']
+);
+
 session_start();
 
-function ldap($conn, $gebruikersnaam, $wachtwoord) {
+function ldap($gebruikersnaam, $wachtwoord) {
     // LDAP test
     $ldapconn = ldap_connect("145.118.4.6");
     if (!$ldapconn) {
