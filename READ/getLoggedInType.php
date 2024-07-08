@@ -1,6 +1,8 @@
 <?php
 function getLoggedInType() {
    // Endpoint to check session and return session data
+    echo var_dump($_SESSION['ingelogdAls']);
+    die();
     if (isset($_SESSION['ingelogdAls'])) {
         $userData = ['inlogDocent' => $_SESSION['inlogDocent']];
 
