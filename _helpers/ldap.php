@@ -70,7 +70,6 @@ function ldap($gebruikersnaam, $wachtwoord) {
                     $_SESSION["inlogError"] = "";
                     $_SESSION['login'] = true;
                     $_SESSION['ingelogdAls'] = 'STUDENT';
-                    $_SESSION['stu'] = $row['student_number'];
                     $_SESSION["inlogStudent"] = $gebruikersnaam; // dubbel
                     $_SESSION['group_id'] = $row['group_id'];
                     $_SESSION['groepsnaam'] = $row2['name'];

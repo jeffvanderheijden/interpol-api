@@ -6,6 +6,8 @@ include 'READ/getGroups.php';
 include 'READ/getStudents.php';
 // Include the challenges functions file
 include 'READ/getChallenges.php';
+// Check if user is teacher or student
+include 'READ/getLoggedInType.php';
 
 // Get the request URI
 $request_uri = $_SERVER['REQUEST_URI'];
@@ -40,6 +42,9 @@ switch ($route) {
         break;
     case '/api/challenge-by-id':
         echo getChallengeById($conn, $_GET);
+        break;
+    case '/api/check-type':
+        echo getLoggedInType();
         break;
     default:
         echo json_encode(['error' => 'Invalid route']);
