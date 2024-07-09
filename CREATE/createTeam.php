@@ -68,5 +68,5 @@ function createTeam($conn, $params) {
 
     createChallengesPerGroup($conn, $group_id);
 
-    echo json_encode(['message' => 'Records inserted successfully']);
+    echo json_encode(['message' => $group_id]);
 }
