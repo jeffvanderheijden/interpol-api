@@ -54,3 +54,20 @@ function getPointsByGroupId($conn, $params) {
         return json_encode(['error' => 'ID parameter missing']);
     }
 }
+// ============================
+// Get top 3 groups by points
+// ============================
+function getTopThreeGroups($conn) {
+    $sql = "SELECT group_id, SUM(points) AS total_points
+            FROM group_challenges
+            GROUP BY group_id
+            ORDER BY total_points DESC
+            LIMIT 3;";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        return json_encode($result->fetch_assoc());
+    } else {
+        return json_encode(['error' => 'Something went wrong fetching top 3 groups']);
+    }
+}

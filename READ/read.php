@@ -49,6 +49,9 @@ switch ($route) {
     case '/api/group-points':
         echo getPointsByGroupId($conn, $_GET);
         break;
+    case '/api/top-three-groups':
+        echo getTopThreeGroups($conn);
+        break;
     default:
         echo json_encode(['error' => 'Invalid route']);
         break;
