@@ -40,8 +40,6 @@ function createChallengesPerGroup($conn, $params) {
 // ============================
 function setChallengePoints($conn, $params) {
     if (isset($params)) {
-        return var_dump($params);
-        die();
         $groupId = $params['group_id'];
         $challengeId = $params['challenge_id'];
         $points = $params['points'];
@@ -52,7 +50,7 @@ function setChallengePoints($conn, $params) {
             die("Prepare failed: " . $conn->error);
         }
 
-        $stmt->bind_param("iii", $points, $completed, $groupId, $challengeId);
+        $stmt->bind_param("iiii", $points, $completed, $groupId, $challengeId);
         $stmt->execute();
 
         return "Points updated successfully";
