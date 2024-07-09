@@ -13,7 +13,6 @@ $request_uri = $_SERVER['REQUEST_URI'];
 $route = parse_url($request_uri, PHP_URL_PATH);
 
 switch ($route) {
-    // LOGIN 
     case '/api/create-session':
         echo createSession($_POST);
         break;
