@@ -45,7 +45,7 @@ function setChallengePoints($conn, $params) {
         $points = $params['points'];
         $completed = $params['completed'];
         // TODO: only set points after inserting correct keycode
-        $stmt = $conn->prepare("UPDATE group_challenges SET points = ? AND completed = ? WHERE group_id = ? AND challenge_id = ?");
+        $stmt = $conn->prepare("UPDATE group_challenges SET points = ?, completed = ? WHERE group_id = ? AND challenge_id = ?");
         if ($stmt === false) {
             die("Prepare failed: " . $conn->error);
         }
