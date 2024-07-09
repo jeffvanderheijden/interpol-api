@@ -14,10 +14,11 @@
 
 $allowedOrigins = [
     'https://admin.interpol.sd-lab.nl',
+    'https://leaderboard.interpol.sd-lab.nl',
     'https://dashboard.interpol.sd-lab.nl',
     'https://html-css.interpol.sd-lab.nl',
     'https://kijk-op-de-wijk.interpol.sd-lab.nl',
-    'https://creative-coding.interpol.sd-lab.nl'
+    'https://creative-coding.interpol.sd-lab.nl',
 ];
 
 if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowedOrigins)) {
