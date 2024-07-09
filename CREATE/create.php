@@ -17,15 +17,19 @@ switch ($route) {
     case '/api/create-session':
         echo createSession($_POST);
         break;
+    case '/api/logout':
+        echo destroySession();
+        break;
     case '/api/create-challenges':
         echo createChallengesPerGroup($conn, $_POST);
         break;
     case '/api/create-team':
         echo createTeam($conn, $_POST);
         break;
-    case '/api/logout':
-        echo destroySession();
+    case '/api/set-challenge-points':
+        echo setChallengePoints($conn, $_POST);
         break;
+    
     default:
         echo json_encode(['error' => 'Invalid route']);
         break;
