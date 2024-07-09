@@ -36,3 +36,21 @@ function getGroupsById($conn, $params) {
         return json_encode(['error' => 'ID parameter missing']);  
     }
 }
+// ============================
+// Get points by group id
+// ============================
+function getPointsByGroupId($conn, $params) {
+    if (isset($params['id'])) {
+        $id = $conn->real_escape_string($params['id']);
+        $sql = "SELECT SUM(points) as total_points FROM group_challenges WHERE group_id = $id";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            return json_encode($result->fetch_assoc());
+        } else {
+            return json_encode(['error' => 'Group not found']);
+        }
+    } else {
+        return json_encode(['error' => 'ID parameter missing']);
+    }
+}

@@ -46,6 +46,9 @@ switch ($route) {
     case '/api/check-type':
         echo getLoggedInType();
         break;
+    case '/api/group-points':
+        echo getPointsByGroupId($conn, $_GET);
+        break;
     default:
         echo json_encode(['error' => 'Invalid route']);
         break;

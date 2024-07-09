@@ -35,3 +35,25 @@ function createChallengesPerGroup($conn, $params) {
         return "Group ID parameter missing";
     }
 }
+// ============================
+// Set points for specific challenge for a group by ID's
+// ============================
+function setChallengePoints($conn, $params) {
+    if (isset($params)) {
+        $groupId = $params['group_id'];
+        $challengeId = $params['challenge_id'];
+        $points = $params['points'];
+        // TODO: only set points after inserting correct keycode
+        $stmt = $conn->prepare("UPDATE group_challenges SET points = ? WHERE group_id = ? AND challenge_id = ?");
+        if ($stmt === false) {
+            die("Prepare failed: " . $conn->error);
+        }
+
+        $stmt->bind_param("iii", $points, $groupId, $challengeId);
+        $stmt->execute();
+
+        return "Points updated successfully";
+    } else {
+        return "Parameters missing";
+    }
+}
