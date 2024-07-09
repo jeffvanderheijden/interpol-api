@@ -3,5 +3,5 @@
 session_start();
 
 function getLoggedInType() {
-    echo json_encode($_SESSION['ingelogdAls']);
+    return json_encode($_SESSION['ingelogdAls']);
 }

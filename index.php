@@ -1,15 +1,15 @@
 <?php
 
 // ==========================================
-// DELETE THIS AFTER DEPLOYMENT !!!!!!!!!
+// ERROR LOGGING ============================
 // ==========================================
 
-ini_set('display_startup_errors', 1);
-ini_set('display_errors', 1);
-error_reporting(-1);
+// ini_set('display_startup_errors', 1);
+// ini_set('display_errors', 1);
+// error_reporting(-1);
 
 // ==========================================
-// END OF DELETE AFTER DEPLOYMENT !!!!!!!!!
+// ==========================================
 // ==========================================
 
 $allowedOrigins = [
@@ -46,10 +46,10 @@ switch ($method) {
         include 'CREATE/create.php';
         break;
     // case 'PUT':
-    //     include 'put.php';
+    //     include 'UPDATE/update.php';
     //     break;
     // case 'DELETE':
-    //     include 'delete.php';
+    //     include 'DELETE/delete.php';
     //     break;
     default:
         echo json_encode(['error' => 'Invalid request method']);

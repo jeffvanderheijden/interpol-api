@@ -19,8 +19,7 @@ function ldap($gebruikersnaam, $wachtwoord) {
     $ldapconn = ldap_connect("145.118.4.6");
     if (!$ldapconn) {
         $_SESSION["inlogError"] = "error";
-        echo json_encode(['error' => 'LDAP connection testing error']);
-        return;
+        return json_encode(['error' => 'LDAP connection testing error']);
     }
 
     // Initialize inloggen variable
@@ -50,8 +49,7 @@ function ldap($gebruikersnaam, $wachtwoord) {
             $_SESSION["ingelogdAls"] = "DOCENT";
             $_SESSION["inlogDocent"] = $gebruikersnaam;
             $_SESSION["mail"] = $info[0]['mail'][0] ?? '';
-            echo json_encode(['message' => 'Docent ingelogd']);
-            return;
+            return json_encode(['message' => 'Docent ingelogd']);
         } else {
             //$filter STUDENTEN
             $filter = "(samaccountname=$gebruikersnaam)";
@@ -76,10 +74,10 @@ function ldap($gebruikersnaam, $wachtwoord) {
                     $_SESSION['voornaam'] = $row['name'];
                     $_SESSION['klas'] = $row2['class'];
                     $_SESSION['image_url'] = $row2['image_url'];
+                } else {
+                    return json_encode('error', 'Geen 1e jaars student...');
                 }
-                return json_encode('error', 'Geen 1e jaars student...');
-            }
-            else {
+            } else {
                 @$_SESSION["inlogError"] = "error";
                 return json_encode('error', 'Geen docent of student van het glr');
             }
@@ -87,5 +85,5 @@ function ldap($gebruikersnaam, $wachtwoord) {
     }
 
     $_SESSION["inlogError"] = "error";
-    echo json_encode(['error' => 'LDAP binding error']);
+    return json_encode(['error' => 'LDAP binding error']);
 }

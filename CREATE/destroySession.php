@@ -11,7 +11,7 @@ session_start();
 // Unset all session variables
 $_SESSION = array();
 
-function destroySession($_POST) {
+function destroySession() {
     // Destroy the session cookie
     if (ini_get("session.use_cookies")) {
         $params = session_get_cookie_params();
@@ -25,5 +25,5 @@ function destroySession($_POST) {
     session_destroy();
 
     // Return response
-    echo json_encode(['message' => 'Logged out successfully']);
+    return json_encode(['message' => 'Logged out successfully']);
 }
