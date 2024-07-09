@@ -66,7 +66,11 @@ function getTopThreeGroups($conn) {
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        return json_encode($result->fetch_assoc());
+        $groups = [];
+        while($row = $result->fetch_assoc()) {
+            $groups[] = $row;
+        }
+        return json_encode($groups);
     } else {
         return json_encode(['error' => 'Something went wrong fetching top 3 groups']);
     }
