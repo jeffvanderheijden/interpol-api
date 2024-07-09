@@ -40,7 +40,7 @@ function createChallengesPerGroup($conn, $params) {
 // ============================
 function setChallengePoints($conn, $params) {
     if (isset($params)) {
-        return $params;
+        return var_dump($params);
         die();
         $groupId = $params['group_id'];
         $challengeId = $params['challenge_id'];
