@@ -24,7 +24,7 @@
 $allowedOrigins = [
     'https://admin.jeffvanderheijden.nl',
     'https://leaderboard.jeffvanderheijden.nl',
-    'https://dashboard.jeffvanderheijden.nl',
+    'https://interpol.jeffvanderheijden.nl',
     'https://html-css.jeffvanderheijden.nl',
     'https://kijk-op-de-wijk.jeffvanderheijden.nl',
     'https://creative-coding.jeffvanderheijden.nl',
