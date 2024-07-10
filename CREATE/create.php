@@ -1,10 +1,10 @@
 <?php
 
 // Include the challenges functions file
-include 'CREATE/createSession.php';
+// include 'CREATE/createSession.php';
 include 'CREATE/createChallenges.php';
 include 'CREATE/createTeam.php';
-include 'CREATE/destroySession.php';
+// include 'CREATE/destroySession.php';
 
 // Get the request URI
 $request_uri = $_SERVER['REQUEST_URI'];
@@ -13,12 +13,12 @@ $request_uri = $_SERVER['REQUEST_URI'];
 $route = parse_url($request_uri, PHP_URL_PATH);
 
 switch ($route) {
-    case '/api/create-session':
-        echo createSession($_POST);
-        break;
-    case '/api/logout':
-        echo destroySession();
-        break;
+    // case '/api/create-session':
+    //     echo createSession($_POST);
+    //     break;
+    // case '/api/logout':
+    //     echo destroySession();
+    //     break;
     case '/api/create-challenges':
         echo createChallengesPerGroup($conn, $_POST);
         break;
