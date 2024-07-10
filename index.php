@@ -12,13 +12,22 @@
 // ==========================================
 // ==========================================
 
+// $allowedOrigins = [
+//     'https://admin.interpol.sd-lab.nl',
+//     'https://leaderboard.interpol.sd-lab.nl',
+//     'https://dashboard.interpol.sd-lab.nl',
+//     'https://html-css.interpol.sd-lab.nl',
+//     'https://kijk-op-de-wijk.interpol.sd-lab.nl',
+//     'https://creative-coding.interpol.sd-lab.nl',
+// ];
+
 $allowedOrigins = [
-    'https://admin.interpol.sd-lab.nl',
-    'https://leaderboard.interpol.sd-lab.nl',
-    'https://dashboard.interpol.sd-lab.nl',
-    'https://html-css.interpol.sd-lab.nl',
-    'https://kijk-op-de-wijk.interpol.sd-lab.nl',
-    'https://creative-coding.interpol.sd-lab.nl',
+    'https://admin.jeffvanderheijden.nl',
+    'https://leaderboard.jeffvanderheijden.nl',
+    'https://dashboard.jeffvanderheijden.nl',
+    'https://html-css.jeffvanderheijden.nl',
+    'https://kijk-op-de-wijk.jeffvanderheijden.nl',
+    'https://creative-coding.jeffvanderheijden.nl',
 ];
 
 if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowedOrigins)) {

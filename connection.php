@@ -1,8 +1,13 @@
 <?php
 // Database credentials
+// $servername = "localhost";
+// $username = "jeffinterpol";
+// $password = "4mkf?890W";
+// $dbname = "interpol-api";
+
 $servername = "localhost";
-$username = "jeffinterpol";
-$password = "4mkf?890W";
+$username = "interpolapi";
+$password = "25641$fk@21mdQ";
 $dbname = "interpol-api";
 
 // Create connection
