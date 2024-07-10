@@ -7,7 +7,7 @@
 
 $servername = "localhost";
 $username = "interpolapi";
-$password = "25641$fk@21mdQ";
+$password = "4mkf?890W";
 $dbname = "interpol-api";
 
 // Create connection
