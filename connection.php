@@ -1,14 +1,14 @@
 <?php
 // Database credentials
-// $servername = "localhost";
-// $username = "jeffinterpol";
-// $password = "4mkf?890W";
-// $dbname = "interpol-api";
-
 $servername = "localhost";
-$username = "interpolapi";
+$username = "jeffinterpol";
 $password = "4mkf?890W";
 $dbname = "interpol-api";
+
+// $servername = "localhost";
+// $username = "interpolapi";
+// $password = "4mkf?890W";
+// $dbname = "interpol-api";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
