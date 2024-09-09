@@ -49,7 +49,7 @@ function ldap($gebruikersnaam, $wachtwoord) {
             $_SESSION["ingelogdAls"] = "DOCENT";
             $_SESSION["inlogDocent"] = $gebruikersnaam;
             $_SESSION["mail"] = $info[0]['mail'][0] ?? '';
-            return json_encode(['message' => 'Docent ingelogd']);
+            return json_encode(['message' => 'Docent ingelogd', 'session' => $_SESSION]);
         } else {
             //$filter STUDENTEN
             $filter = "(samaccountname=$gebruikersnaam)";
@@ -74,6 +74,7 @@ function ldap($gebruikersnaam, $wachtwoord) {
                     $_SESSION['voornaam'] = $row['name'];
                     $_SESSION['klas'] = $row2['class'];
                     $_SESSION['image_url'] = $row2['image_url'];
+                    return json_encode(['message' => 'Student ingelogd', 'session' => $_SESSION]);
                 } else {
                     return json_encode('error', 'Geen 1e jaars student...');
                 }
