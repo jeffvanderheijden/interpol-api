@@ -3,8 +3,7 @@
 function getStudentAndGroup($conn, $params) {
     if (isset($params['id'])) {
         $id = $conn->real_escape_string($params['id']);
-        $sql = "
-            SELECT
+        $sql = "SELECT
                 s.id AS student_id,
                 s.name AS student_name,
                 s.student_number as student_number,
