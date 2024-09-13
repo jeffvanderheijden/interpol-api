@@ -57,7 +57,7 @@ function ldap($gebruikersnaam, $wachtwoord) {
             $sr = ldap_search($ldapconn, $ldaprdn, $filter);
             $info = ldap_get_entries($ldapconn, $sr);
             if ($info["count"] == 1) {
-                require('./../connection.php');
+                require('connection.php');
                 $query = "SELECT student_number, group_id, name FROM students WHERE student_number = '$gebruikersnaam'";
                 $result = mysqli_query($conn, $query);
                 $row = mysqli_fetch_assoc($result);
