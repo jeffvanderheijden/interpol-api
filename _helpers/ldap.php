@@ -76,11 +76,11 @@ function ldap($gebruikersnaam, $wachtwoord) {
                     $_SESSION['image_url'] = $row2['image_url'];
                     return json_encode(['message' => 'Student ingelogd', 'session' => $_SESSION]);
                 } else {
-                    return json_encode('error', 'Geen 1e jaars student...');
+                    return json_encode(['error', 'Geen 1e jaars student...']);
                 }
             } else {
                 @$_SESSION["inlogError"] = "error";
-                return json_encode('error', 'Geen docent of student van het glr');
+                return json_encode(['error', 'Geen docent of student van het glr']);
             }
         }
     }
