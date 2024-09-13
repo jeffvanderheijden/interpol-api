@@ -59,11 +59,11 @@ function ldap($gebruikersnaam, $wachtwoord) {
             if ($info["count"] == 1) {
                 require_once ('connection.php');
                 $query = "SELECT student_number, group_id, name FROM students WHERE student_number = '$gebruikersnaam'";
-                $result = mysqli_query($con, $query);
+                $result = mysqli_query($conn, $query);
                 $row = mysqli_fetch_assoc($result);
                 if (!empty($row['student_number'])) {
                     $query = "SELECT name, image_url, class FROM groups WHERE id='$row[group_id]'";
-                    $result = mysqli_query($con, $query);
+                    $result = mysqli_query($conn, $query);
                     $row2 = mysqli_fetch_assoc($result);
                     $_SESSION["inlogError"] = "";
                     $_SESSION['login'] = true;
