@@ -12,7 +12,7 @@ session_set_cookie_params(
     $cookieParams['httponly']
 );
 
-session_start();
+// session_start();
 
 function ldap($gebruikersnaam, $wachtwoord) {
     // LDAP test
