@@ -57,27 +57,34 @@ function ldap($gebruikersnaam, $wachtwoord) {
             $sr = ldap_search($ldapconn, $ldaprdn, $filter);
             $info = ldap_get_entries($ldapconn, $sr);
             if ($info["count"] == 1) {
-                require('connection.php');
-                $query = "SELECT student_number, group_id, name FROM students WHERE student_number = '$gebruikersnaam'";
-                $result = mysqli_query($conn, $query);
-                $row = mysqli_fetch_assoc($result);
-                if (!empty($row['student_number'])) {
-                    $query = "SELECT name, image_url, class FROM groups WHERE id='$row[group_id]'";
-                    $result = mysqli_query($conn, $query);
-                    $row2 = mysqli_fetch_assoc($result);
-                    $_SESSION["inlogError"] = "";
-                    $_SESSION['login'] = true;
-                    $_SESSION['ingelogdAls'] = 'STUDENT';
-                    $_SESSION["inlogStudent"] = $gebruikersnaam; // dubbel
-                    $_SESSION['group_id'] = $row['group_id'];
-                    $_SESSION['groepsnaam'] = $row2['name'];
-                    $_SESSION['voornaam'] = $row['name'];
-                    $_SESSION['klas'] = $row2['class'];
-                    $_SESSION['image_url'] = $row2['image_url'];
-                    return json_encode(['message' => 'Student ingelogd', 'session' => $_SESSION]);
-                } else {
-                    return json_encode(['error', 'Geen 1e jaars student...']);
-                }
+                $_SESSION["inlogError"] = "";
+                $_SESSION['login'] = true;
+                $_SESSION["ingelogdAls"] = "STUDENT";
+                $_SESSION["inlogStudent"] = $gebruikersnaam;
+                $_SESSION["mail"] = $info[0]['mail'][0] ?? '';
+                return json_encode(['message' => 'Student ingelogd', 'session' => $_SESSION]);
+                // THIS CODE IS TO GET TEAMS, UNNEEDED FOR NOW
+                // require('connection.php');
+                // $query = "SELECT student_number, group_id, name FROM students WHERE student_number = '$gebruikersnaam'";
+                // $result = mysqli_query($conn, $query);
+                // $row = mysqli_fetch_assoc($result);
+                // if (!empty($row['student_number'])) {
+                //     $query = "SELECT name, image_url, class FROM groups WHERE id='$row[group_id]'";
+                //     $result = mysqli_query($conn, $query);
+                //     $row2 = mysqli_fetch_assoc($result);
+                //     $_SESSION["inlogError"] = "";
+                //     $_SESSION['login'] = true;
+                //     $_SESSION['ingelogdAls'] = 'STUDENT';
+                //     $_SESSION["inlogStudent"] = $gebruikersnaam; // dubbel
+                //     $_SESSION['group_id'] = $row['group_id'];
+                //     $_SESSION['groepsnaam'] = $row2['name'];
+                //     $_SESSION['voornaam'] = $row['name'];
+                //     $_SESSION['klas'] = $row2['class'];
+                //     $_SESSION['image_url'] = $row2['image_url'];
+                //     return json_encode(['message' => 'Student ingelogd', 'session' => $_SESSION]);
+                // } else {
+                //     return json_encode(['error', 'Geen 1e jaars student...']);
+                // }
             } else {
                 @$_SESSION["inlogError"] = "error";
                 return json_encode(['error', 'Geen docent of student van het glr']);
