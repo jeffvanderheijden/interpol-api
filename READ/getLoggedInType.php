@@ -3,5 +3,9 @@
 session_start();
 
 function getLoggedInType() {
-    return json_encode($_SESSION['ingelogdAls']);
+    if (!isset($_SESSION['ingelogdAls'])) {
+        return json_encode(['error' => 'Not logged in']);
+    } else {
+        return json_encode($_SESSION['ingelogdAls']);
+    }
 }
