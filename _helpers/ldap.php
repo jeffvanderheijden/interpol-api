@@ -56,9 +56,8 @@ function ldap($gebruikersnaam, $wachtwoord) {
             $ldaprdn = 'ou=glr_studenten,dc=ict,dc=lab,dc=locals'; // ldap rdn or dn
             $sr = ldap_search($ldapconn, $ldaprdn, $filter);
             $info = ldap_get_entries($ldapconn, $sr);
-            var_dump($info);
             if ($info["count"] == 1) {
-                require_once ('connection.php');
+                require_once('./../connection.php');
                 $query = "SELECT student_number, group_id, name FROM students WHERE student_number = '$gebruikersnaam'";
                 $result = mysqli_query($conn, $query);
                 $row = mysqli_fetch_assoc($result);
