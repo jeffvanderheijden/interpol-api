@@ -40,7 +40,7 @@ function ldap($gebruikersnaam, $wachtwoord) {
         // Filter DOCENTEN
         $filter = "(samaccountname=$gebruikersnaam)";
         $ldaprdn = "ou=docenten,dc=ict,dc=lab,dc=locals"; // ldap rdn or dn
-        $sr = ldap_search($ldapconn, $ldaprdn, $filter);
+        $sr = ldap_search($ldapconn, $ldaprdn, $filter);        
         $info = ldap_get_entries($ldapconn, $sr);
 
         if ($info["count"] == 1) {
@@ -55,6 +55,7 @@ function ldap($gebruikersnaam, $wachtwoord) {
             $filter = "(samaccountname=$gebruikersnaam)";
             $ldaprdn = 'ou=glr_studenten,dc=ict,dc=lab,dc=locals'; // ldap rdn or dn
             $sr = ldap_search($ldapconn, $ldaprdn, $filter);
+            var_dump($sr);
             $info = ldap_get_entries($ldapconn, $sr);
             if ($info["count"] == 1) {
                 var_dump($info);
