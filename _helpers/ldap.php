@@ -62,6 +62,7 @@ function ldap($gebruikersnaam, $wachtwoord) {
                 $_SESSION["ingelogdAls"] = "STUDENT";
                 $_SESSION["inlogStudent"] = $gebruikersnaam;
                 $_SESSION["mail"] = $info[0]['mail'][0] ?? '';
+                $_SESSION["ldapData"] = $info;
                 return json_encode(['message' => 'Student ingelogd', 'session' => $_SESSION]);
                 // THIS CODE IS TO GET TEAMS, UNNEEDED FOR NOW
                 // require('connection.php');
