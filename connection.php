@@ -1,9 +1,9 @@
 <?php
 // Database credentials
-$servername = "localhost";
-$username = "jeffinterpol";
-$password = "4mkf?890W";
-$dbname = "interpol-api";
+$servername = getenv('DB_HOST');
+$username = getenv('DB_USER');
+$password = getenv('DB_PASSWORD');
+$dbname = getenv('DB_NAME');
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
