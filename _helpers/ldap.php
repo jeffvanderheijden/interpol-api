@@ -57,12 +57,14 @@ function ldap($gebruikersnaam, $wachtwoord) {
             $ldaprdn = 'ou=glr_studenten,dc=ict,dc=lab,dc=locals'; // ldap rdn or dn
             $sr = ldap_search($ldapconn, $ldaprdn, $filter);
             $info = ldap_get_entries($ldapconn, $sr);
+
             if ($info["count"] == 1) {
                 $_SESSION["inlogError"] = "";
                 $_SESSION['login'] = true;
                 $_SESSION["ingelogdAls"] = "STUDENT";
                 $_SESSION["inlogStudent"] = $gebruikersnaam;
                 $_SESSION["mail"] = $info[0]['mail'][0] ?? '';
+                $_SESSION["info"] = $info;
                 return json_encode(['message' => 'Student ingelogd', 'session' => $_SESSION]);
                 // THIS CODE IS TO GET TEAMS, UNNEEDED FOR NOW
                 // require('connection.php');
