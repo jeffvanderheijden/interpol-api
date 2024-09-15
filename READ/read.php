@@ -5,7 +5,7 @@ include 'READ/getGroups.php';
 // Include the students functions file
 include 'READ/getStudents.php';
 // Include the get student and group file
-include 'READ/getStudentAndGroup.php';
+include 'READ/getStudent.php';
 // Include the challenges functions file
 include 'READ/getChallenges.php';
 // Check if user is teacher or student
@@ -35,8 +35,8 @@ switch ($route) {
     case '/api/student':
         echo getStudentById($conn, $_GET);
         break;
-    case '/api/student-and-group':
-        echo getStudentAndGroup($conn, $_GET);
+    case '/api/student-data':
+        echo getStudent($conn, $_GET);
         break;
     // CHALLENGES
     case '/api/challenges':
