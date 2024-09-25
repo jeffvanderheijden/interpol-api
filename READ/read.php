@@ -19,14 +19,14 @@ $route = parse_url($request_uri, PHP_URL_PATH);
 
 switch ($route) {
     case '/api':
-        echo json_encode(['welcome' => "Available routes: /api/groups, /api/group, /api/students-by-group, /api/student, /api/challenges, /api/challenges-by-group"]);
+        echo json_encode(['welcome' => "Available routes: TODO: add available routes"]);
         break;
     // GROUPS
     case '/api/groups':
         echo getGroups($conn);
         break;
     case '/api/group':
-        echo getGroupsById($conn, $_GET);
+        echo getGroupById($conn, $_GET);
         break;
     // STUDENTS
     case '/api/students-by-group':
@@ -36,7 +36,7 @@ switch ($route) {
         echo getStudentById($conn, $_GET);
         break;
     case '/api/student-data':
-        echo getStudent($conn, $_GET);
+        echo getStudent();
         break;
     // CHALLENGES
     case '/api/challenges':

@@ -21,7 +21,7 @@ function getGroups($conn) {
 // ============================
 // Gets student groups by ID
 // ============================
-function getGroupsById($conn, $params) {
+function getGroupById($conn, $params) {
     if (isset($params['id'])) {
         $id = $conn->real_escape_string($params['id']);
         $sql = "SELECT * FROM groups WHERE id = $id";
