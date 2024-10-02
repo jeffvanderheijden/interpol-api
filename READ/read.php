@@ -38,6 +38,9 @@ switch ($route) {
     case '/api/student-data':
         echo getStudent();
         break;
+    case '/api/student-additional-data':
+        echo getAdditionalStudentData($conn, $_GET);
+        break;
     // CHALLENGES
     case '/api/challenges':
         echo getChallenges($conn);

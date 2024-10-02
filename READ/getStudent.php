@@ -13,3 +13,19 @@ function getStudent() {
         }
     }
 }
+
+function getAdditionalStudentData($conn, $params) {
+    if (isset($params['id'])) {
+        $id = $conn->real_escape_string($params['id']);
+        $sql = "SELECT * FROM students WHERE id = $id";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            return json_encode($result->fetch_assoc());
+        } else {
+            return json_encode(['error' => 'Student not found']);
+        }
+    } else {
+        return json_encode(['error' => 'ID parameter missing']);  
+    }
+}
