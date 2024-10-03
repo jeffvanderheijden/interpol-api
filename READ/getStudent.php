@@ -15,9 +15,12 @@ function getStudent() {
 }
 
 function getAdditionalStudentData($conn, $params) {
-    if (isset($params['id'])) {
-        $id = $conn->real_escape_string($params['id']);
-        $sql = "SELECT * FROM students WHERE id = $id";
+    if (isset($params['student_id'])) {
+        $student_id = $conn->real_escape_string($params['student_id']);
+        $sql = "SELECT *
+        FROM students s
+        LEFT JOIN groups g ON s.group_id = g.id
+        WHERE s.student_number = $student_id;";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
