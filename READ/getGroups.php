@@ -81,7 +81,7 @@ function getTopThreeGroups($conn) {
 function getGroupsByClass($conn, $params) {
     if (isset($params['class'])) {
         $class = $conn->real_escape_string($params['class']);
-        $sql = "SELECT * FROM groups WHERE class = $class"; 
+        $sql = "SELECT * FROM groups WHERE class = '$class'"; 
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
