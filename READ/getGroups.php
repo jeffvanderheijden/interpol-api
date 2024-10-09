@@ -75,3 +75,21 @@ function getTopThreeGroups($conn) {
         return json_encode(['error' => 'Something went wrong fetching top 3 groups']);
     }
 }
+// ============================
+// Get groups by class
+// ============================
+function getGroupsByClass($conn, $params) {
+    if (isset($params['class'])) {
+        $class = $conn->real_escape_string($params['class']);
+        $sql = "SELECT * FROM groups WHERE class = $class";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            return json_encode($result->fetch_assoc());
+        } else {
+            return json_encode(['error' => 'Group not found']);
+        }
+    } else {
+        return json_encode(['error' => 'Class parameter missing']);
+    }
+}

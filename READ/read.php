@@ -28,6 +28,14 @@ switch ($route) {
     case '/api/group':
         echo getGroupById($conn, $_GET);
         break;
+    case '/api/group-points':
+        echo getPointsByGroupId($conn, $_GET);
+        break;
+    case '/api/top-three-groups':
+        echo getTopThreeGroups($conn);
+    case '/api/groups-by-class':
+        echo getGroupsByClass($conn, $_GET);
+        break;
     // STUDENTS
     case '/api/students-by-group':
         echo getStudentsByGroup($conn, $_GET);
@@ -51,14 +59,9 @@ switch ($route) {
     case '/api/challenge-by-id':
         echo getChallengeById($conn, $_GET);
         break;
+    // CHECK LOGGED IN TYPE (TEACHER OR STUDENT)
     case '/api/check-type':
         echo getLoggedInType();
-        break;
-    case '/api/group-points':
-        echo getPointsByGroupId($conn, $_GET);
-        break;
-    case '/api/top-three-groups':
-        echo getTopThreeGroups($conn);
         break;
     default:
         echo json_encode(['error' => 'Invalid route']);
