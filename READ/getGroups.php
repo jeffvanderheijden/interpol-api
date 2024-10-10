@@ -78,6 +78,7 @@ function getTopThreeGroups($conn) {
 // ============================
 // Get groups by class
 // ============================
+
 function getGroupsByClass($conn, $params) {
     if (isset($params['class'])) {
         $class = $conn->real_escape_string($params['class']);
