@@ -49,9 +49,9 @@ switch ($method) {
     // case 'PUT':
     //     include 'UPDATE/update.php';
     //     break;
-    // case 'DELETE':
-    //     include 'DELETE/delete.php';
-    //     break;
+    case 'DELETE':
+        include 'DELETE/delete.php';
+        break;
     default:
         echo json_encode(['error' => 'Invalid request method']);
         break;
