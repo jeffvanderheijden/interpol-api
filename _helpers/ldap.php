@@ -13,7 +13,7 @@ session_set_cookie_params(
 );
 
 // Session was already started..
-// session_start();
+session_start();
 
 function ldap($gebruikersnaam, $wachtwoord) {
     // LDAP test

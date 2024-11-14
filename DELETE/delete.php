@@ -3,9 +3,6 @@
 // Include the delete groups functions file
 include 'DELETE/deleteGroup.php';
 
-// Start the session if not already started (for role checks or authorization)
-session_start();
-
 // Get the request URI
 $request_uri = $_SERVER['REQUEST_URI'];
 

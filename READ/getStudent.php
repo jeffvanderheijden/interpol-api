@@ -1,8 +1,5 @@
 <?php
 
-// Secure session handling
-session_start();
-
 // ============================
 // Gets student data from session
 // ============================

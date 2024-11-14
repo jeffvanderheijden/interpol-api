@@ -5,9 +5,6 @@ header('Content-Type: application/json');
 // Destroy session cookie, logs user out
 // ============================
 
-// Start the session
-session_start();
-
 // Unset all session variables
 $_SESSION = array();
 

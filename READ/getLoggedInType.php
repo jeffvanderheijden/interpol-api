@@ -1,7 +1,5 @@
 <?php
 
-session_start();
-
 // Secure session settings
 if (session_status() == PHP_SESSION_ACTIVE) {
     // Set session cookie parameters (if not already done in php.ini)
