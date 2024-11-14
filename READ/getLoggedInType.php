@@ -1,7 +1,5 @@
 <?php
 
-session_start();
-
 // Secure session settings
 if (session_status() == PHP_SESSION_ACTIVE) {
     // Set session cookie parameters (if not already done in php.ini)
@@ -20,6 +18,7 @@ if (session_status() == PHP_SESSION_ACTIVE) {
 }
 
 function getLoggedInType() {
+    session_start();
     if (!isset($_SESSION['ingelogdAls'])) {
         return json_encode(['error' => 'Not logged in']);  // Return a consistent error message
     } else {
