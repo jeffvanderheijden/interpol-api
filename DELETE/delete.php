@@ -12,7 +12,8 @@ $route = parse_url($request_uri, PHP_URL_PATH);
 switch ($route) {
     // GROUPS
     case '/api/remove-group':
-        echo deleteGroup($conn, $_DELETE);
+        $data = ['group_id' => $_GET['group_id']]; // Extract group_id from URL
+        echo deleteGroup($conn, $data);
         break;
     default:
         echo json_encode(['error' => 'Invalid route']);
