@@ -5,7 +5,7 @@
 // Function to delete a group and associated records
 function deleteGroup($conn, $data) {
     if (!isset($data['group_id'])) {
-        return json_encode(['error' => 'Missing group_id parameter.']);
+        return json_encode(['error' => 'Missing group_id parameter.' + $data]);
     }
 
     $group_id = (int) $data['group_id']; // Sanitize group_id input
