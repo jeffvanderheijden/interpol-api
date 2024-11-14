@@ -4,45 +4,59 @@
 // ============================
 function getChallenges($conn) {
     $sql = "SELECT * FROM challenges";
-    $result = $conn->query($sql);
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    $challenges = [];
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
+        $challenges = [];
+        while ($row = $result->fetch_assoc()) {
             $challenges[] = $row;
         }
-    } else {
-        return json_encode(['error' => 'No challenges found']);
-    }
 
-    return json_encode($challenges);
+        $stmt->close();
+
+        if (empty($challenges)) {
+            return json_encode(['error' => 'No challenges found']);
+        }
+
+        return json_encode($challenges);
+    } else {
+        error_log("Failed to prepare statement: " . $conn->error);
+        return json_encode(["error" => "Failed to retrieve challenges"]);
+    }
 }
+
 // ============================
 // Gets challenges by student group ID
 // ============================
 function getChallengesByGroupId($conn, $params) {
-    if (isset($params['id'])) {
-        $sql = "SELECT *
-            FROM group_challenges
-            WHERE group_id = ?";
+    if (!isset($params['id']) || !is_numeric($params['id'])) {
+        return json_encode(['error' => 'Invalid or missing ID parameter']);
+    }
 
-        if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("i", $params['id']); // "i" indicates integer type for the parameter
-            $stmt->execute();
-            $result = $stmt->get_result();
+    $group_id = (int) $params['id'];
+    $sql = "SELECT * FROM group_challenges WHERE group_id = ?";
 
-            $challenges = [];
-            while ($row = $result->fetch_assoc()) {
-                $challenges[] = $row;
-            }
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("i", $group_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            $stmt->close();
-            return json_encode($challenges);
-        } else {
-            return json_encode(["error" => "Failed to prepare statement"]);
+        $challenges = [];
+        while ($row = $result->fetch_assoc()) {
+            $challenges[] = $row;
         }
+
+        $stmt->close();
+
+        if (empty($challenges)) {
+            return json_encode(['error' => 'No challenges found for the specified group ID']);
+        }
+
+        return json_encode($challenges);
     } else {
-        return json_encode(['error' => 'ID parameter missing']);
+        error_log("Failed to prepare statement: " . $conn->error);
+        return json_encode(["error" => "Failed to retrieve challenges for group ID"]);
     }
 }
 
@@ -50,25 +64,32 @@ function getChallengesByGroupId($conn, $params) {
 // Gets challenges by ID
 // ============================
 function getChallengeById($conn, $params) {
-    if (isset($params['id'])) {
-        $sql = "SELECT * FROM challenges WHERE id = ?";
+    if (!isset($params['id']) || !is_numeric($params['id'])) {
+        return json_encode(['error' => 'Invalid or missing ID parameter']);
+    }
 
-        if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("i", $params['id']); // "i" indicates integer type for the parameter
-            $stmt->execute();
-            $result = $stmt->get_result();
+    $challenge_id = (int) $params['id'];
+    $sql = "SELECT * FROM challenges WHERE id = ?";
 
-            $challenges = [];
-            while ($row = $result->fetch_assoc()) {
-                $challenges[] = $row;
-            }
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("i", $challenge_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            $stmt->close();
-            return json_encode($challenges);
-        } else {
-            return json_encode(["error" => "Failed to prepare statement"]);
+        $challenges = [];
+        while ($row = $result->fetch_assoc()) {
+            $challenges[] = $row;
         }
+
+        $stmt->close();
+
+        if (empty($challenges)) {
+            return json_encode(['error' => 'No challenge found for the specified ID']);
+        }
+
+        return json_encode($challenges);
     } else {
-        return json_encode(['error'=> 'ID parameter missing']);
+        error_log("Failed to prepare statement: " . $conn->error);
+        return json_encode(["error" => "Failed to retrieve challenge by ID"]);
     }
 }
