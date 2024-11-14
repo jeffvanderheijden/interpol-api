@@ -18,6 +18,7 @@ if (session_status() == PHP_SESSION_ACTIVE) {
 }
 
 function getLoggedInType() {
+    return $_SESSION['ingelogdAls'] ?? null;
     if (!isset($_SESSION['ingelogdAls'])) {
         return json_encode(['error' => 'Not logged in']);  // Return a consistent error message
     } else {
