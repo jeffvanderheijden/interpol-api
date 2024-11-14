@@ -11,9 +11,6 @@ function deleteGroup($conn, $data) {
     $group_id = (int) $data['group_id']; // Sanitize group_id input
 
     try {
-        // Begin transaction
-        $conn->beginTransaction();
-
         // Delete from group_challenges
         $stmt = $conn->prepare("DELETE FROM group_challenges WHERE group_id = :group_id");
         $stmt->bindParam(':group_id', $group_id, PDO::PARAM_INT);
@@ -28,9 +25,6 @@ function deleteGroup($conn, $data) {
         $stmt = $conn->prepare("DELETE FROM groups WHERE id = :group_id");
         $stmt->bindParam(':group_id', $group_id, PDO::PARAM_INT);
         $stmt->execute();
-
-        // Commit transaction
-        $conn->commit();
 
         return json_encode(['success' => 'Group and associated records successfully deleted.']);
     } catch (PDOException $e) {
