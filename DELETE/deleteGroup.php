@@ -13,7 +13,7 @@ function deleteGroup($conn, $data) {
 
     // Step 2: Check if user has permission to delete the group (example role check)
     if (!isAuthorizedToDeleteGroup()) {
-        return json_encode(['error' => 'Unauthorized accesssss']);
+        return json_encode(['error' => 'Unauthorized access']);
     }
 
     // Step 3: Begin a database transaction
