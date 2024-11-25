@@ -18,7 +18,8 @@ function sanitize_group_id($id) {
 // Check if user is authorized to delete groups (e.g., check if the user is a teacher or admin)
 function isAuthorizedToDelete() {
     // Example authorization check: only allow deletion if user is a teacher or admin
-    return isset($_SESSION['ingelogdAls']) && $_SESSION['ingelogdAls'] === 'DOCENT';
+    // return isset($_SESSION['ingelogdAls']) && $_SESSION['ingelogdAls'] === 'DOCENT';
+    return $_SESSION['ingelogdAls'];
 }
 
 switch ($route) {
@@ -26,7 +27,7 @@ switch ($route) {
     case '/api/remove-group':
         // Check if the user is authorized
         if (!isAuthorizedToDelete()) {
-            echo json_encode(['error' => 'Unauthorized access']);
+            echo json_encode(['error' => 'Unauthorized access111']);
             break;
         }
 
