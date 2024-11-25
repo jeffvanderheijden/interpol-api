@@ -66,7 +66,7 @@ switch ($route) {
             $group_id = sanitize_input($_GET['id']);
             echo getStudentsByGroup($conn, ['id' => $group_id]);
         } else {
-            echo json_encode(['error' => 'ID parameter missing']);
+            echo json_encode(['error' => $_GET['id']]);
         }
         break;
     case '/api/student':
