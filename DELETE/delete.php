@@ -18,7 +18,7 @@ function sanitize_group_id($id) {
 // Check if user is authorized to delete groups (e.g., check if the user is a teacher or admin)
 function isAuthorizedToDelete() {
     // Example authorization check: only allow deletion if user is a teacher or admin
-    return isset($_SESSION['role']) && in_array($_SESSION['role'], ['admin', 'teacher']);
+    return isset($_SESSION['ingelogdAls']) && in_array($_SESSION['ingelogdAls'], ['DOCENT']);
 }
 
 switch ($route) {
