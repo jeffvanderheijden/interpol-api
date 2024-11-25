@@ -12,7 +12,6 @@ session_set_cookie_params(
     $cookieParams['httponly']
 );
 
-// Session was already started..
 session_start();
 
 function ldap($gebruikersnaam, $wachtwoord) {

@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 // Include the delete groups functions file
 include 'DELETE/deleteGroup.php';
