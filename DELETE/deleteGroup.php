@@ -61,5 +61,5 @@ function deleteGroup($conn, $data) {
 function isAuthorizedToDeleteGroup() {
     // Implement your role-based check logic here (e.g., check if user is admin)
     // Example: Assuming $_SESSION['role'] is set to 'admin' or 'teacher'
-    return isset($_SESSION['role']) && $_SESSION['role'] === 'DOCENT';
+    return isset($_SESSION['ingelogdAls']) && $_SESSION['ingelogdAls'] === 'DOCENT';
 }
