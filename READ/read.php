@@ -94,9 +94,9 @@ switch ($route) {
         echo getChallenges($conn);
         break;
     case '/api/challenges-by-group':
-        if (isset($_GET['group_id'])) {
-            $group_id = sanitize_input($_GET['group_id']);
-            echo getChallengesByGroupId($conn, ['group_id' => $group_id]);
+        if (isset($_GET['id'])) {
+            $group_id = sanitize_input($_GET['id']);
+            echo getChallengesByGroupId($conn, ['id' => $group_id]);
         } else {
             echo json_encode(['error' => 'Group ID parameter missing']);
         }
