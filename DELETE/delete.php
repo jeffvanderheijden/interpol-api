@@ -3,6 +3,7 @@ session_start();
 
 // Include the delete groups functions file
 include 'DELETE/deleteGroup.php';
+include 'DELETE/deleteStudent.php';
 
 // Get the request URI
 $request_uri = $_SERVER['REQUEST_URI'];
@@ -48,6 +49,31 @@ switch ($route) {
             echo json_encode(['error' => 'Missing group_id parameter']);
         }
         break;
+
+        case '/api/remove-student':
+            // Check if the user is authorized
+            if (!isAuthorizedToDelete()) {
+                echo json_encode(['error' => 'Unauthorized access']);
+                break;
+            }
+    
+            // Check if group_id is set and sanitize it
+            if (isset($_GET['id'])) {
+                $student_id = sanitize_group_id($_GET['id']);
+                
+                // Check if group_id is valid
+                if ($student_id <= 0) {
+                    echo json_encode(['error' => 'Invalid student_id']);
+                    break;
+                }
+    
+                // Prepare data for deletion
+                $data = ['student_id' => $student_id];
+                echo deleteStudent($conn, $data); // Call the delete function with sanitized student_id
+            } else {
+                echo json_encode(['error' => 'Missing student_id parameter']);
+            }
+            break;
 
     default:
         echo json_encode(['error' => 'Invalid route']);
