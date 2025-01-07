@@ -12,12 +12,20 @@ $route = parse_url($request_uri, PHP_URL_PATH);
 // Handle the request based on the route
 switch ($route) {
     case '/api/update-group':
-        // Make sure to parse the PUT data and call the updateGroup function
-        $params = parsePutData(); // Parse the PUT data
-        if ($params) {
-            echo updateGroup($conn, $params);
+        // Check if the request method is PUT
+        if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+            // Manually parse the PUT data (since PHP doesn't automatically parse PUT data into $_POST)
+            parse_str(file_get_contents("php://input"), $_POST);
+            
+            // Now $_POST contains the form fields and $_FILES contains the file data
+            if (isset($_POST['group_id'])) {
+                // Call the updateGroup function, passing the connection and $_POST data
+                echo updateGroup($conn, $_POST);
+            } else {
+                echo json_encode(['error' => 'Group ID is required for updating.']);
+            }
         } else {
-            echo json_encode(['error' => 'Invalid or missing data.']);
+            echo json_encode(['error' => 'Invalid request method. Only PUT is allowed.']);
         }
         break;
     
