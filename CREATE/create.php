@@ -3,7 +3,7 @@
 // Include the challenges functions file
 include 'CREATE/createSession.php';
 include 'CREATE/createChallenges.php';
-include 'CREATE/createTeam.php';
+include 'CREATE/createGroup.php';
 include 'CREATE/destroySession.php';
 
 // Get the request URI
@@ -23,7 +23,7 @@ switch ($route) {
         echo createChallengesPerGroup($conn, $_POST);
         break;
     case '/api/create-team':
-        echo createTeam($conn, $_POST);
+        echo createGroup($conn, $_POST);
         break;
     case '/api/set-challenge-points':
         echo setChallengePoints($conn, $_POST);

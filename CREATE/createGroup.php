@@ -4,7 +4,7 @@ header('Content-Type: application/json');
 // ============================
 // Creates team image and uploads to server
 // ============================
-function createTeam($conn, $params) {
+function createGroup($conn, $params) {
     if (isset($params['image'])) {
         // Save the image
         $base64_image = $params['image'];

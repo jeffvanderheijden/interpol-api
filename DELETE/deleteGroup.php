@@ -11,11 +11,6 @@ function deleteGroup($conn, $data) {
 
     $group_id = (int) $data['group_id']; // Sanitize the group_id as an integer
 
-    // Step 2: Check if user has permission to delete the group (example role check)
-    if (!isAuthorizedToDeleteGroup()) {
-        return json_encode(['error' => 'Unauthorized access']);
-    }
-
     // Step 3: Begin a database transaction
     $conn->begin_transaction();
 
@@ -55,11 +50,4 @@ function deleteGroup($conn, $data) {
 
         return json_encode(['error' => 'Failed to delete group due to a system error. Please try again later.']);
     }
-}
-
-// Function to check if the user has permission to delete a group
-function isAuthorizedToDeleteGroup() {
-    // Implement your role-based check logic here (e.g., check if user is admin)
-    // Example: Assuming $_SESSION['role'] is set to 'admin' or 'teacher'
-    return isset($_SESSION['ingelogdAls']) && $_SESSION['ingelogdAls'] === 'DOCENT';
 }
