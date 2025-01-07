@@ -1,4 +1,4 @@
-<?php 
+<?php
 header('Content-Type: application/json');
 
 // ============================
@@ -102,3 +102,26 @@ function updateGroup($conn, $params) {
 
     echo json_encode(['message' => 'Group updated successfully.']);
 }
+
+// ============================
+// Read the raw PUT data
+// ============================
+function parsePutData() {
+    // Read the raw PUT data from the input stream
+    $putData = file_get_contents("php://input");
+    
+    // Parse the data as JSON (assuming the data is sent as JSON)
+    return json_decode($putData, true);
+}
+
+// ============================
+// Main logic to process the request
+// ============================
+$params = parsePutData(); // Parse the PUT data
+
+if (!$params) {
+    die("Error: Invalid or missing data.");
+}
+
+// Assuming you have a database connection $conn
+updateGroup($conn, $params);
