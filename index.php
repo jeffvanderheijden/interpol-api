@@ -29,6 +29,7 @@ if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     // Handle preflight request
+    echo $_SERVER['HTTP_ORIGIN'];
     exit(0);
 }
 
