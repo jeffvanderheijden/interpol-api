@@ -16,14 +16,16 @@ switch ($route) {
         if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
             // Manually parse the PUT data (since PHP doesn't automatically parse PUT data into $_POST)
             parse_str(file_get_contents("php://input"), $_POST);
-            
+
+            echo $_POST;
+
             // Now $_POST contains the form fields and $_FILES contains the file data
-            if (isset($_POST['group_id'])) {
-                // Call the updateGroup function, passing the connection and $_POST data
-                echo updateGroup($conn, $_POST);
-            } else {
-                echo json_encode(['error' => 'Group ID is required for updating.']);
-            }
+            // if (isset($_POST['group_id'])) {
+            //     // Call the updateGroup function, passing the connection and $_POST data
+            //     echo updateGroup($conn, $_POST);
+            // } else {
+            //     echo json_encode(['error' => 'Group ID is required for updating.']);
+            // }
         } else {
             echo json_encode(['error' => 'Invalid request method. Only PUT is allowed.']);
         }
