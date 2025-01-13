@@ -20,7 +20,7 @@ switch ($route) {
             // // Now $_POST contains the form fields and $_FILES contains the file data
             if (isset($_POST['group_id'])) {
                 // Call the updateGroup function, passing the connection and $_POST data
-                echo updateGroup($conn, $_POST);
+                echo updateGroup($conn);
             } else {
                 echo json_encode(['error' => 'Group ID is required for updating.']);
             }
