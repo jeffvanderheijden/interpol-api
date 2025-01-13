@@ -4,7 +4,7 @@ header('Content-Type: application/json');
 // ============================
 // Updates an existing group
 // ============================
-function updateGroup($conn, $_POST) {
+function updateGroup($conn) {
     // Ensure the group_id is provided for the update
     if (!isset($_POST['group_id'])) {
         die("Error: Group ID is required for updating.");
