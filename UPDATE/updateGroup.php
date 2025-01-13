@@ -113,5 +113,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     // Parse PUT data manually since PHP does not natively handle PUT data in $_POST
     parse_str(file_get_contents("php://input"), $_POST);
 }
-
-updateGroup($conn);
