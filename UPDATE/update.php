@@ -17,9 +17,8 @@ switch ($route) {
             // Manually parse the PUT data (since PHP doesn't automatically parse PUT data into $_POST)
             parse_str(file_get_contents("php://input"), $_POST);
 
-            echo $_POST;
-
-            // Now $_POST contains the form fields and $_FILES contains the file data
+            echo json_encode(['Parsed formdata: ' => $_POST]);
+            // // Now $_POST contains the form fields and $_FILES contains the file data
             // if (isset($_POST['group_id'])) {
             //     // Call the updateGroup function, passing the connection and $_POST data
             //     echo updateGroup($conn, $_POST);
