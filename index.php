@@ -45,7 +45,6 @@ switch ($method) {
         break;
     case 'POST':
         include 'CREATE/create.php';
-        include 'UPDATE/update.php';
         break;
     case 'PUT':
         include 'UPDATE/update.php';
