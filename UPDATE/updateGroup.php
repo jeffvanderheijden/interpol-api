@@ -70,6 +70,12 @@ function updateGroup($conn, $data) {
         if (is_string($data['students'])) {
             // Decode the students field from JSON string to array
             $students = json_decode($data['students'], true);  // Decode the students field as JSON
+
+            // Check if decoding was successful
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                echo json_encode(['error' => 'Invalid JSON in students field']);
+                exit;
+            }
         } else {
             // If it's already an array, use it directly
             $students = $data['students'];
