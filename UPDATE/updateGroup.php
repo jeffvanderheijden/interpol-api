@@ -64,7 +64,19 @@ function updateGroup($conn, $data) {
     $stmt->close();
 
     // Decode students JSON once
-    $students = json_decode($data['students'], true);
+    // Check if 'students' exists and decode it properly
+    if (isset($data['students'])) {
+        // Check if the students data is a string (i.e., a JSON string)
+        if (is_string($data['students'])) {
+            // Decode the students field from JSON string to array
+            $students = json_decode($data['students'], true);  // Decode the students field as JSON
+        } else {
+            // If it's already an array, use it directly
+            $students = $data['students'];
+        }
+    } else {
+        $students = [];
+    }
 
     // Update students information if provided
     if (!empty($students) && is_array($students)) {

@@ -18,6 +18,9 @@ switch ($route) {
             $rawData = file_get_contents("php://input");
             $data = json_decode($rawData, true);  // Decode the JSON data into an associative array
 
+            // Debugging: Log the raw data to check the structure
+            error_log("Raw POST Data: " . print_r($data, true));
+
             // // Now $_POST contains the form fields and $_FILES contains the file data
             if (isset($data['group_id'])) {
                 // Call the updateGroup function, passing the connection and $_POST data
