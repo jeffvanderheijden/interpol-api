@@ -48,7 +48,7 @@ function updateGroup($conn, $data) {
     //     }
     // }
 
-    $file_path = "";
+    // $file_path = "";
 
     // Prepare the SQL statement to update the group
     // $stmt = $conn->prepare("UPDATE groups SET name = ?, image_url = ?, class = ? WHERE id = ?");
@@ -57,7 +57,7 @@ function updateGroup($conn, $data) {
         die("Error preparing statement for groups table: " . $conn->error);
     }
     // $stmt->bind_param("sssi", $data['name'], $file_path, $data['class'], $data['group_id']);
-    $stmt->bind_param("sssi", $data['name'], $data['class'], $data['group_id']);
+    $stmt->bind_param("ssi", $data['name'], $data['class'], $data['group_id']);
 
     // Execute the statement and check for errors
     if ($stmt->execute() === false) {
