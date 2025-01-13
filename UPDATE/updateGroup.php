@@ -106,10 +106,10 @@ function updateGroup($conn, $data) {
         }
         foreach ($students as $student) {
             // Check if student data is correctly structured
-            if (!isset($student['name']) || !isset($student['number'])) {
+            if (!isset($student['name']) || !isset($student['student_number'])) {
                 die("Error: Student data is incomplete.");
             }
-            $stmt->bind_param("ssi", $student['name'], $student['number'], $data['group_id']);
+            $stmt->bind_param("ssi", $student['name'], $student['student_number'], $data['group_id']);
             if ($stmt->execute() === false) {
                 die("Error inserting data into students table: " . $stmt->error);
             }
