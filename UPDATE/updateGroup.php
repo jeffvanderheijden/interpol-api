@@ -51,7 +51,7 @@ function updateGroup($conn, $data) {
     $file_path = "";
 
     // Prepare the SQL statement to update the group
-    $stmt = $conn->prepare("UPDATE groups SET name = ?, image_url = ?, class = ? WHERE group_id = ?");
+    $stmt = $conn->prepare("UPDATE groups SET name = ?, image_url = ?, class = ? WHERE id = ?");
     if (!$stmt) {
         die("Error preparing statement for groups table: " . $conn->error);
     }
