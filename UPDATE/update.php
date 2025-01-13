@@ -14,11 +14,14 @@ switch ($route) {
     case '/api/update-group':
         // Check if the request method is PUT
         if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-            // Manually parse the input if necessary
-            parse_str(file_get_contents("php://input"), $_POST);
-            
             // Debug: Check if $_POST is populated correctly
-            error_log(print_r($_POST, true));  // Log the $_POST data for debugging
+            // Check the raw input data
+            $rawData = file_get_contents("php://input");
+            error_log("Raw PUT Data: " . $rawData);
+
+            // Manually parse the input data
+            parse_str($rawData, $_POST);
+            error_log("Parsed POST Data: " . print_r($_POST, true));
 
             // // Now $_POST contains the form fields and $_FILES contains the file data
             if (isset($_POST['group_id'])) {
