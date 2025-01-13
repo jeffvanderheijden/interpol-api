@@ -14,19 +14,14 @@ switch ($route) {
     case '/api/update-group':
         // Check if the request method is PUT
         if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-            // Debug: Check if $_POST is populated correctly
-            // Check the raw input data
+            // Read the raw POST data (assuming JSON content)
             $rawData = file_get_contents("php://input");
-            error_log("Raw PUT Data: " . $rawData);
-
-            // Manually parse the input data
-            parse_str($rawData, $_POST);
-            error_log("Parsed POST Data: " . print_r($_POST, true));
+            $data = json_decode($rawData, true);  // Decode the JSON data into an associative array
 
             // // Now $_POST contains the form fields and $_FILES contains the file data
-            if (isset($_POST['group_id'])) {
+            if (isset($data['group_id'])) {
                 // Call the updateGroup function, passing the connection and $_POST data
-                echo updateGroup($conn);
+                echo updateGroup($conn, $data);
             } else {
                 echo json_encode(['error' => 'Group ID is required for updating.']);
             }

@@ -4,16 +4,11 @@ header('Content-Type: application/json');
 // ============================
 // Updates an existing group
 // ============================
-function updateGroup($conn) {
-    // Ensure the group_id is provided for the update
-    if (!isset($_POST['group_id'])) {
-        die("Error: Group ID is required for updating.");
-    }
-
+function updateGroup($conn, $data) {
     // Handle the image if it's provided
-    if (isset($_FILES['image'])) {
+    if (isset($data['image'])) {
         // Save the image
-        $image = $_FILES['image'];
+        $image = $data['image'];
         $image_data = file_get_contents($image['tmp_name']);
         $filename = uniqid() . '.png';
         $file_path = 'uploads/' . $filename;
@@ -35,7 +30,7 @@ function updateGroup($conn) {
         if (!$stmt) {
             die("Error preparing statement to fetch existing image: " . $conn->error);
         }
-        $stmt->bind_param("i", $_POST['group_id']);
+        $stmt->bind_param("i", $data['group_id']);
         $stmt->execute();
         $stmt->bind_result($existing_image_url);
         $stmt->fetch();
@@ -58,7 +53,7 @@ function updateGroup($conn) {
     if (!$stmt) {
         die("Error preparing statement for groups table: " . $conn->error);
     }
-    $stmt->bind_param("sssi", $_POST['name'], $file_path, $_POST['class'], $_POST['group_id']);
+    $stmt->bind_param("sssi", $data['name'], $file_path, $data['class'], $data['group_id']);
 
     // Execute the statement and check for errors
     if ($stmt->execute() === false) {
@@ -69,7 +64,7 @@ function updateGroup($conn) {
     $stmt->close();
 
     // Decode students JSON once
-    $students = json_decode($_POST['students'], true);
+    $students = json_decode($data['students'], true);
 
     // Update students information if provided
     if (!empty($students) && is_array($students)) {
@@ -78,7 +73,7 @@ function updateGroup($conn) {
         if (!$stmt) {
             die("Error preparing statement for deleting students: " . $conn->error);
         }
-        $stmt->bind_param("i", $_POST['group_id']);
+        $stmt->bind_param("i", $data['group_id']);
         if ($stmt->execute() === false) {
             die("Error deleting students from the group: " . $stmt->error);
         }
@@ -94,7 +89,7 @@ function updateGroup($conn) {
             if (!isset($student['name']) || !isset($student['number'])) {
                 die("Error: Student data is incomplete.");
             }
-            $stmt->bind_param("ssi", $student['name'], $student['number'], $_POST['group_id']);
+            $stmt->bind_param("ssi", $student['name'], $student['number'], $data['group_id']);
             if ($stmt->execute() === false) {
                 die("Error inserting data into students table: " . $stmt->error);
             }
@@ -104,12 +99,4 @@ function updateGroup($conn) {
     }
 
     echo json_encode(['message' => 'Group updated successfully.']);
-}
-
-// ============================
-// Main logic to process the request
-// ============================
-if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-    // Parse PUT data manually since PHP does not natively handle PUT data in $_POST
-    parse_str(file_get_contents("php://input"), $_POST);
 }
