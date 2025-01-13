@@ -14,9 +14,6 @@ switch ($route) {
     case '/api/update-group':
         // Check if the request method is PUT
         if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-            // Manually parse the PUT data (since PHP doesn't automatically parse PUT data into $_POST)
-            parse_str(file_get_contents("php://input"), $_POST);
-
             // Debug: Check if $_POST is populated correctly
             error_log(print_r($_POST, true));  // Log the $_POST data for debugging
 
