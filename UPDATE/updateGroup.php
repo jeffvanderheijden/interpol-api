@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 // Updates an existing group
 // ============================
 function updateGroup($conn, $data) {
-    // Handle the image if it's provided
+    // Handle the image if it's provided, DISABLED FOR NOW. 
     // if (isset($data['image'])) {
     //     // Save the image
     //     $image = $data['image'];
@@ -51,11 +51,13 @@ function updateGroup($conn, $data) {
     $file_path = "";
 
     // Prepare the SQL statement to update the group
-    $stmt = $conn->prepare("UPDATE groups SET name = ?, image_url = ?, class = ? WHERE id = ?");
+    // $stmt = $conn->prepare("UPDATE groups SET name = ?, image_url = ?, class = ? WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE groups SET name = ?, class = ? WHERE id = ?");
     if (!$stmt) {
         die("Error preparing statement for groups table: " . $conn->error);
     }
-    $stmt->bind_param("sssi", $data['name'], $file_path, $data['class'], $data['group_id']);
+    // $stmt->bind_param("sssi", $data['name'], $file_path, $data['class'], $data['group_id']);
+    $stmt->bind_param("sssi", $data['name'], $data['class'], $data['group_id']);
 
     // Execute the statement and check for errors
     if ($stmt->execute() === false) {
