@@ -90,19 +90,8 @@ function updateGroup($conn, $data) {
 
     // Update students information if provided
     if (!empty($students) && is_array($students)) {
-        // First, delete existing students for the group (optional, based on your use case)
-        $stmt = $conn->prepare("DELETE FROM students WHERE group_id = ?");
-        if (!$stmt) {
-            die("Error preparing statement for deleting students: " . $conn->error);
-        }
-        $stmt->bind_param("i", $data['group_id']);
-        if ($stmt->execute() === false) {
-            die("Error deleting students from the group: " . $stmt->error);
-        }
-        $stmt->close();
-
         // Insert updated student data
-        $stmt = $conn->prepare("INSERT INTO students (name, student_number, group_id) VALUES (?, ?, ?)");
+        $stmt = $conn->prepare("UPDATE students SET name = ?, student_number = ? WHERE group_id = ?");
         if (!$stmt) {
             die("Error preparing statement for students table: " . $conn->error);
         }
