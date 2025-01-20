@@ -90,34 +90,27 @@ function updateGroup($conn, $data) {
 
     // Update students information if provided
     if (!empty($students) && is_array($students)) {
-        // First, delete existing students for the group (optional, based on your use case)
-        $stmt = $conn->prepare("DELETE FROM students WHERE group_id = ?");
-        if (!$stmt) {
-            die("Error preparing statement for deleting students: " . $conn->error);
-        }
-        $stmt->bind_param("i", $data['group_id']);
-        if ($stmt->execute() === false) {
-            die("Error deleting students from the group: " . $stmt->error);
-        }
-        $stmt->close();
+        $conn->begin_transaction();
+        try {
+            // DELETE operation
+            $stmt = $conn->prepare("DELETE FROM students WHERE group_id = ?");
+            $stmt->bind_param("i", $data['group_id']);
+            $stmt->execute();
+            $stmt->close();
 
-        // Insert updated student data
-        $stmt = $conn->prepare("INSERT INTO students (name, student_number, group_id) VALUES (?, ?, ?)");
-        if (!$stmt) {
-            die("Error preparing statement for students table: " . $conn->error);
-        }
-        foreach ($students as $student) {
-            // Check if student data is correctly structured
-            if (!isset($student['name']) || !isset($student['student_number'])) {
-                die("Error: Student data is incomplete.");
+            // INSERT operation
+            $stmt = $conn->prepare("INSERT INTO students (name, student_number, group_id) VALUES (?, ?, ?)");
+            foreach ($students as $student) {
+                $stmt->bind_param("ssi", $student['name'], $student['student_number'], $data['group_id']);
+                $stmt->execute();
             }
-            $stmt->bind_param("ssi", $student['name'], $student['student_number'], $data['group_id']);
-            if ($stmt->execute() === false) {
-                die("Error inserting data into students table: " . $stmt->error);
-            }
+            $stmt->close();
+
+            $conn->commit();
+        } catch (Exception $e) {
+            $conn->rollback();
+            die("Transaction failed: " . $e->getMessage());
         }
-        // Close the statement
-        $stmt->close();
     }
 
     echo json_encode(['message' => 'Group updated successfully.']);
