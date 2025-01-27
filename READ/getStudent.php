@@ -4,6 +4,7 @@
 // Gets student data from session
 // ============================
 function getStudent() {
+    var_dump($_SESSION);
     if (!isset($_SESSION['info'])) {
         return json_encode(['error' => 'No student data found in session.']);
     } else {
