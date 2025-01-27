@@ -4,7 +4,11 @@
 // Gets student data from session
 // ============================
 function getStudent() {
-    var_dump($_SESSION);
+    // Start session if not already started
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+
     if (!isset($_SESSION['info'])) {
         return json_encode(['error' => 'No student data found in session.']);
     } else {
