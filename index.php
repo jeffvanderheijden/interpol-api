@@ -19,7 +19,7 @@ $allowedOrigins = [
     'https://kijk-op-de-wijk.interpol.sd-lab.nl',
     'https://creative-coding.interpol.sd-lab.nl',
     // Update with student projects 
-    'https://088484.stu.sd-lab.nl/',
+    'https://088484.stu.sd-lab.nl',
 ];
 
 if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowedOrigins)) {
@@ -32,7 +32,8 @@ if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     // Handle preflight request
-    exit(0);
+    http_response_code(200);
+    exit;
 }
 
 // Include the database connection file
