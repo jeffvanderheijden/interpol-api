@@ -52,7 +52,14 @@ function ldap($gebruikersnaam, $wachtwoord) {
             $_SESSION["ingelogdAls"] = "DOCENT";
             $_SESSION["inlogDocent"] = $gebruikersnaam;
             $_SESSION["mail"] = $info[0]['mail'][0] ?? '';
-            return json_encode(['message' => 'Docent ingelogd', 'session' => $_SESSION]);
+            return json_encode([
+                'message' => 'Docent ingelogd',
+                'session' => [
+                    'ingelogdAls' => 'DOCENT',
+                    'mail' => $_SESSION["mail"],
+                    'gebruikersnaam' => $gebruikersnaam
+                ]
+            ]);
         } else {
             //$filter STUDENTEN
             $filter = "(samaccountname=$gebruikersnaam)";
@@ -67,10 +74,17 @@ function ldap($gebruikersnaam, $wachtwoord) {
                 $_SESSION["inlogStudent"] = $gebruikersnaam;
                 $_SESSION["mail"] = $info[0]['mail'][0] ?? '';
                 $_SESSION["info"] = $info;
-                return json_encode(['message' => 'Student ingelogd', 'session' => $_SESSION]);
+                return json_encode([
+                    'message' => 'Student ingelogd',
+                    'session' => [
+                        'ingelogdAls' => 'STUDENT',
+                        'mail' => $_SESSION["mail"],
+                        'gebruikersnaam' => $gebruikersnaam
+                    ]
+                ]);
             } else {
                 @$_SESSION["inlogError"] = "error";
-                return json_encode(['error', 'Geen docent of student van het glr']);
+                return json_encode(['error' => 'Geen docent of student van het glr']);
             }
         }
     }
