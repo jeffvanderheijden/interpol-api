@@ -20,12 +20,17 @@ if (session_status() == PHP_SESSION_NONE) {
 function ldap($gebruikersnaam, $wachtwoord) {
     // Test account for TEACHER
     if ($gebruikersnaam === "docent123" && $wachtwoord === "docent123") {
+        $_SESSION["inlogError"] = "";
+        $_SESSION['login'] = true;
+        $_SESSION["ingelogdAls"] = "DOCENT";
+        $_SESSION["inlogDocent"] = 'docent123';
+        $_SESSION["mail"] = 'test@docent.nl';
         return json_encode([
             'message' => 'Docent ingelogd',
             'session' => [
                 'ingelogdAls' => 'DOCENT',
-                'mail' => 'test@docent.nl',
-                'gebruikersnaam' => 'test docent'
+                'mail' => $_SESSION["mail"],
+                'gebruikersnaam' => $gebruikersnaam
             ]
         ]);
     }
