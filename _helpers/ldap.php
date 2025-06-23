@@ -18,6 +18,17 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 function ldap($gebruikersnaam, $wachtwoord) {
+    // Test account for TEACHER
+    if ($gebruikersnaam === "docent123" && $wachtwoord === "docent123") {
+        return json_encode([
+            'message' => 'Docent ingelogd',
+            'session' => [
+                'ingelogdAls' => 'DOCENT',
+                'mail' => 'test@docent.nl',
+                'gebruikersnaam' => 'test docent'
+            ]
+        ]);
+    }
     // LDAP test
     $ldapconn = ldap_connect("145.118.4.6");
     if (!$ldapconn) {
