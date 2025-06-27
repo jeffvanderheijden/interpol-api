@@ -19,7 +19,10 @@ if (session_status() == PHP_SESSION_NONE) {
 
 function ldap($gebruikersnaam, $wachtwoord) {
     // Test account for TEACHER
-    if ($gebruikersnaam === "productiehuis1@glr.nl" && $wachtwoord === "S7GPmxT8K92K!" || $gebruikersnaam === "productiehuis2@glr.nl" && $wachtwoord === "mI0zT626aCVg!") {
+    if (
+        $gebruikersnaam === "productiehuis1@glr.nl" && $wachtwoord === "S7GPmxT8K92K!" || 
+        $gebruikersnaam === "productiehuis2@glr.nl" && $wachtwoord === "mI0zT626aCVg!" || 
+        $gebruikersnaam === "docent123" && $wachtwoord === "docent123") {
         $_SESSION["inlogError"] = "";
         $_SESSION['login'] = true;
         $_SESSION["ingelogdAls"] = "DOCENT";
