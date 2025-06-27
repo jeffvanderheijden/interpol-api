@@ -37,6 +37,25 @@ function ldap($gebruikersnaam, $wachtwoord) {
             ]
         ]);
     }
+
+    if (
+        $gebruikersnaam === "student1" && $wachtwoord === "student1" || 
+        $gebruikersnaam === "student2" && $wachtwoord === "student2") {
+        $_SESSION["inlogError"] = "";
+        $_SESSION['login'] = true;
+        $_SESSION["ingelogdAls"] = "STUDENT";
+        $_SESSION["inlogStudent"] = 'teststudent';
+        $_SESSION["mail"] = 'student@glr.nl';
+        return json_encode([
+            'message' => 'Student ingelogd',
+            'session' => [
+                'ingelogdAls' => 'STUDENT',
+                'mail' => $_SESSION["mail"],
+                'gebruikersnaam' => $gebruikersnaam
+            ]
+        ]);
+    }
+
     // LDAP test
     $ldapconn = ldap_connect("145.118.4.6");
     if (!$ldapconn) {
