@@ -5,59 +5,56 @@ header('Content-Type: application/json');
 // Updates an existing group
 // ============================
 function updateGroup($conn, $data) {
-    // Handle the image if it's provided, DISABLED FOR NOW. 
-    // if (isset($data['image'])) {
-    //     // Save the image
-    //     $image = $data['image'];
-    //     $image_data = file_get_contents($image['tmp_name']);
-    //     $filename = uniqid() . '.png';
-    //     $file_path = 'uploads/' . $filename;
+    // Handle the image if it's provided
+    if (isset($data['image'])) {
+        // Save the image
+        $image = $data['image'];
+        $image_data = file_get_contents($image['tmp_name']);
+        $filename = uniqid() . '.png';
+        $file_path = 'uploads/' . $filename;
 
-    //     // Ensure the directory exists and is writable
-    //     if (!file_exists('uploads')) {
-    //         mkdir('uploads', 0777, true);
-    //     }
+        // Ensure the directory exists and is writable
+        if (!file_exists('uploads')) {
+            mkdir('uploads', 0777, true);
+        }
 
-    //     if (move_uploaded_file($image['tmp_name'], $file_path) === false) {
-    //         die("Failed to save the image.");
-    //     }
-    // } else {
-    //     // Initialize $existing_image_url to avoid unassigned variable warning
-    //     $existing_image_url = '';
+        if (move_uploaded_file($image['tmp_name'], $file_path) === false) {
+            die("Failed to save the image.");
+        }
+    } else {
+        // Initialize $existing_image_url to avoid unassigned variable warning
+        $existing_image_url = '';
         
-    //     // If no new image is provided, fetch the existing image URL from the database
-    //     $stmt = $conn->prepare("SELECT image_url FROM groups WHERE group_id = ?");
-    //     if (!$stmt) {
-    //         die("Error preparing statement to fetch existing image: " . $conn->error);
-    //     }
-    //     $stmt->bind_param("i", $data['group_id']);
-    //     $stmt->execute();
-    //     $stmt->bind_result($existing_image_url);
-    //     $stmt->fetch();
-    //     $stmt->close();
+        // If no new image is provided, fetch the existing image URL from the database
+        $stmt = $conn->prepare("SELECT image_url FROM groups WHERE group_id = ?");
+        if (!$stmt) {
+            die("Error preparing statement to fetch existing image: " . $conn->error);
+        }
+        $stmt->bind_param("i", $data['group_id']);
+        $stmt->execute();
+        $stmt->bind_result($existing_image_url);
+        $stmt->fetch();
+        $stmt->close();
 
-    //     // If no image exists, use the default image
-    //     if (empty($existing_image_url)) {
-    //         if(empty($image_data)) {
-    //             $file_path = 'uploads/default.png';
-    //         } else {
-    //             $file_path = $image_data;
-    //         }
-    //     } else {
-    //         $file_path = $existing_image_url;
-    //     }
-    // }
+        // If no image exists, use the default image
+        if (empty($existing_image_url)) {
+            if(empty($image_data)) {
+                $file_path = 'uploads/default.png';
+            } else {
+                $file_path = $image_data;
+            }
+        } else {
+            $file_path = $existing_image_url;
+        }
+    }
 
     // $file_path = "";
 
-    // Prepare the SQL statement to update the group
-    // $stmt = $conn->prepare("UPDATE groups SET name = ?, image_url = ?, class = ? WHERE id = ?");
-    $stmt = $conn->prepare("UPDATE groups SET name = ?, class = ? WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE groups SET name = ?, image_url = ?, class = ? WHERE id = ?");
     if (!$stmt) {
         die("Error preparing statement for groups table: " . $conn->error);
     }
-    // $stmt->bind_param("sssi", $data['name'], $file_path, $data['class'], $data['group_id']);
-    $stmt->bind_param("ssi", $data['name'], $data['class'], $data['group_id']);
+    $stmt->bind_param("sssi", $data['name'], $file_path, $data['class'], $data['group_id']);
 
     // Execute the statement and check for errors
     if ($stmt->execute() === false) {
