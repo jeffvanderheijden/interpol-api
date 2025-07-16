@@ -17,7 +17,7 @@ function updateGroupChallengePoints($conn, $data)
     $points = intval($data['points']);
 
     // Prepare the SQL statement
-    $stmt = $conn->prepare("UPDATE group_challenges SET points = ? WHERE group_id = ? AND challenge_id = ?");
+    $stmt = $conn->prepare("UPDATE group_challenges SET points = ? WHERE group_id = ? AND id = ?");
     if (!$stmt) {
         die("Error preparing statement for group_challenges table: " . $conn->error);
     }
