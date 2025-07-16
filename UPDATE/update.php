@@ -2,6 +2,7 @@
 
 // Include the groups functions file
 include 'UPDATE/updateGroup.php';
+include 'UPDATE/updateGroupChallenge.php';
 
 // Get the request URI
 $request_uri = $_SERVER['REQUEST_URI'];
@@ -32,6 +33,24 @@ switch ($route) {
             echo json_encode(['error' => 'Invalid request method. Only PUT is allowed.']);
         }
         break;
+
+    case '/api/update-group-challenge':
+        if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+            $rawData = file_get_contents("php://input");
+            $data = json_decode($rawData, true);
+
+            error_log("Update Group Challenge Request: " . print_r($data, true));
+
+            if (isset($data['group_id']) && isset($data['challenge_id']) && isset($data['points'])) {
+                echo updateGroupChallengePoints($conn, $data);
+            } else {
+                echo json_encode(['error' => 'Missing group_id, challenge_id, or points']);
+            }
+        } else {
+            echo json_encode(['error' => 'Invalid request method. Only PUT is allowed.']);
+        }
+        break;
+
     
     default:
         echo json_encode(['error' => 'Invalid route']);
