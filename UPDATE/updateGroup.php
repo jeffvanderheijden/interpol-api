@@ -2,111 +2,98 @@
 header('Content-Type: application/json');
 
 // ============================
+// Helper function for JSON errors
+// ============================
+function jsonError($msg) {
+    echo json_encode(['error' => $msg]);
+    exit;
+}
+
+// ============================
 // Updates an existing group
 // ============================
 function updateGroup($conn, $data) {
-    // Handle the image if it's provided
-    if (isset($data['image'])) {
-        // Save the image
+    // Validate required fields
+    if (!isset($data['group_id'], $data['name'], $data['class'])) {
+        jsonError('Missing required fields.');
+    }
+
+    $group_id = intval($data['group_id']);
+    $name = $data['name'];
+    $class = $data['class'];
+    $file_path = '';
+
+    // Handle image upload if provided
+    if (isset($data['image']) && isset($data['image']['tmp_name']) && !empty($data['image']['tmp_name'])) {
         $image = $data['image'];
-        $image_data = file_get_contents($image['tmp_name']);
         $filename = uniqid() . '.png';
-        $file_path = 'uploads/' . $filename;
+        $upload_dir = 'uploads/';
+        if (!file_exists($upload_dir)) mkdir($upload_dir, 0777, true);
+        $file_path = $upload_dir . $filename;
 
-        // Ensure the directory exists and is writable
-        if (!file_exists('uploads')) {
-            mkdir('uploads', 0777, true);
-        }
-
-        if (move_uploaded_file($image['tmp_name'], $file_path) === false) {
-            die("Failed to save the image.");
+        if (!move_uploaded_file($image['tmp_name'], $file_path)) {
+            jsonError('Failed to save the uploaded image.');
         }
     } else {
-        // Initialize $existing_image_url to avoid unassigned variable warning
-        $existing_image_url = '';
-        
-        // If no new image is provided, fetch the existing image URL from the database
-        $stmt = $conn->prepare("SELECT image_url FROM groups WHERE group_id = ?");
-        if (!$stmt) {
-            die("Error preparing statement to fetch existing image: " . $conn->error);
-        }
-        $stmt->bind_param("i", $data['group_id']);
+        // No new image, fetch existing image from DB
+        $stmt = $conn->prepare("SELECT image_url FROM groups WHERE id = ?");
+        if (!$stmt) jsonError('Prepare failed: ' . $conn->error);
+        $stmt->bind_param("i", $group_id);
         $stmt->execute();
         $stmt->bind_result($existing_image_url);
         $stmt->fetch();
         $stmt->close();
 
-        // If no image exists, use the default image
-        if (empty($existing_image_url)) {
-            if(empty($image_data)) {
-                $file_path = 'uploads/default.png';
-            } else {
-                $file_path = $image_data;
-            }
-        } else {
-            $file_path = $existing_image_url;
-        }
+        $file_path = !empty($existing_image_url) ? $existing_image_url : 'uploads/default.png';
     }
 
-    // $file_path = "";
-
+    // Update group info
     $stmt = $conn->prepare("UPDATE groups SET name = ?, image_url = ?, class = ? WHERE id = ?");
-    if (!$stmt) {
-        die("Error preparing statement for groups table: " . $conn->error);
-    }
-    $stmt->bind_param("sssi", $data['name'], $file_path, $data['class'], $data['group_id']);
+    if (!$stmt) jsonError('Prepare failed: ' . $conn->error);
+    $stmt->bind_param("sssi", $name, $file_path, $class, $group_id);
 
-    // Execute the statement and check for errors
-    if ($stmt->execute() === false) {
-        die("Error updating data in groups table: " . $stmt->error);
+    if (!$stmt->execute()) {
+        jsonError('Failed to update group: ' . $stmt->error);
     }
-
-    // Close the statement
     $stmt->close();
 
-    // Decode students JSON once
-    // Check if 'students' exists and decode it properly
+    // Handle students if provided
+    $students = [];
     if (isset($data['students'])) {
-        // Check if the students data is a string (i.e., a JSON string)
         if (is_string($data['students'])) {
-            // Decode the students field from JSON string to array
-            $students = json_decode($data['students'], true);  // Decode the students field as JSON
-
-            // Check if decoding was successful
+            $students = json_decode($data['students'], true);
             if (json_last_error() !== JSON_ERROR_NONE) {
-                echo json_encode(['error' => 'Invalid JSON in students field']);
-                exit;
+                jsonError('Invalid JSON in students field.');
             }
-        } else {
-            // If it's already an array, use it directly
+        } elseif (is_array($data['students'])) {
             $students = $data['students'];
         }
-    } else {
-        $students = [];
     }
 
-    // Update students information if provided
-    if (!empty($students) && is_array($students)) {
+    if (!empty($students)) {
         $conn->begin_transaction();
         try {
-            // DELETE operation
+            // Delete old students
             $stmt = $conn->prepare("DELETE FROM students WHERE group_id = ?");
-            $stmt->bind_param("i", $data['group_id']);
+            if (!$stmt) jsonError('Prepare failed: ' . $conn->error);
+            $stmt->bind_param("i", $group_id);
             $stmt->execute();
             $stmt->close();
 
-            // INSERT operation
+            // Insert new students
             $stmt = $conn->prepare("INSERT INTO students (name, student_number, group_id) VALUES (?, ?, ?)");
+            if (!$stmt) jsonError('Prepare failed: ' . $conn->error);
+
             foreach ($students as $student) {
-                $stmt->bind_param("ssi", $student['name'], $student['student_number'], $data['group_id']);
+                if (!isset($student['name'], $student['student_number'])) continue;
+                $stmt->bind_param("ssi", $student['name'], $student['student_number'], $group_id);
                 $stmt->execute();
             }
             $stmt->close();
-
             $conn->commit();
         } catch (Exception $e) {
             $conn->rollback();
-            die("Transaction failed: " . $e->getMessage());
+            jsonError('Transaction failed: ' . $e->getMessage());
         }
     }
 
