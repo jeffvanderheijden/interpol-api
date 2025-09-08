@@ -23,19 +23,22 @@ function updateGroup($conn, $data) {
     $class = $data['class'];
     $file_path = '';
 
-    // Handle image upload if provided
+    // ============================
+    // Handle image upload
+    // ============================
+    $upload_dir = 'uploads/';
+    if (!file_exists($upload_dir)) mkdir($upload_dir, 0777, true);
+
     if (isset($data['image']) && isset($data['image']['tmp_name']) && !empty($data['image']['tmp_name'])) {
         $image = $data['image'];
-        $filename = uniqid() . '.png';
-        $upload_dir = 'uploads/';
-        if (!file_exists($upload_dir)) mkdir($upload_dir, 0777, true);
+        $filename = uniqid() . '_' . basename($image['name']);
         $file_path = $upload_dir . $filename;
 
         if (!move_uploaded_file($image['tmp_name'], $file_path)) {
             jsonError('Failed to save the uploaded image.');
         }
     } else {
-        // No new image, fetch existing image from DB
+        // No new image → keep existing
         $stmt = $conn->prepare("SELECT image_url FROM groups WHERE id = ?");
         if (!$stmt) jsonError('Prepare failed: ' . $conn->error);
         $stmt->bind_param("i", $group_id);
@@ -44,10 +47,12 @@ function updateGroup($conn, $data) {
         $stmt->fetch();
         $stmt->close();
 
-        $file_path = !empty($existing_image_url) ? $existing_image_url : 'uploads/default.png';
+        $file_path = !empty($existing_image_url) ? $existing_image_url : $upload_dir . 'default.png';
     }
 
+    // ============================
     // Update group info
+    // ============================
     $stmt = $conn->prepare("UPDATE groups SET name = ?, image_url = ?, class = ? WHERE id = ?");
     if (!$stmt) jsonError('Prepare failed: ' . $conn->error);
     $stmt->bind_param("sssi", $name, $file_path, $class, $group_id);
@@ -57,7 +62,9 @@ function updateGroup($conn, $data) {
     }
     $stmt->close();
 
-    // Handle students if provided
+    // ============================
+    // Handle students
+    // ============================
     $students = [];
     if (isset($data['students'])) {
         if (is_string($data['students'])) {
