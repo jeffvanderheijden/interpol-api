@@ -1,19 +1,12 @@
 <?php
 header('Content-Type: application/json');
 
-// ============================
-// Helper function for JSON errors
-// ============================
 function jsonError($msg) {
     echo json_encode(['error' => $msg]);
     exit;
 }
 
-// ============================
-// Updates an existing group
-// ============================
 function updateGroup($conn, $data) {
-    // Validate required fields
     if (!isset($data['group_id'], $data['name'], $data['class'])) {
         jsonError('Missing required fields.');
     }
@@ -23,38 +16,35 @@ function updateGroup($conn, $data) {
     $class = $data['class'];
     $file_path = '';
 
-    // ============================
-    // Handle image upload
-    // ============================
-    $upload_dir = 'uploads/';
-    if (!file_exists($upload_dir)) mkdir($upload_dir, 0777, true);
-
-    if (isset($data['image']) && isset($data['image']['tmp_name']) && !empty($data['image']['tmp_name'])) {
-        $image = $data['image'];
-        $filename = uniqid() . '_' . basename($image['name']);
+    // =========================
+    // Handle uploaded image
+    // =========================
+    if (isset($_FILES['image']) && $_FILES['image']['tmp_name'] != '') {
+        $image = $_FILES['image'];
+        $filename = uniqid() . '.png';
+        $upload_dir = 'uploads/';
+        if (!file_exists($upload_dir)) mkdir($upload_dir, 0777, true);
         $file_path = $upload_dir . $filename;
 
         if (!move_uploaded_file($image['tmp_name'], $file_path)) {
-            jsonError('Failed to save the uploaded image.');
+            jsonError('Failed to save uploaded image.');
         }
     } else {
-        // No new image → keep existing
-        $stmt = $conn->prepare("SELECT image_url FROM groups WHERE id = ?");
-        if (!$stmt) jsonError('Prepare failed: ' . $conn->error);
+        // No new image: fetch existing
+        $stmt = $conn->prepare("SELECT image_url FROM groups WHERE id=?");
         $stmt->bind_param("i", $group_id);
         $stmt->execute();
-        $stmt->bind_result($existing_image_url);
+        $stmt->bind_result($file_path);
         $stmt->fetch();
         $stmt->close();
 
-        $file_path = !empty($existing_image_url) ? $existing_image_url : $upload_dir . 'default.png';
+        if (!$file_path) $file_path = 'uploads/default.png';
     }
 
-    // ============================
+    // =========================
     // Update group info
-    // ============================
-    $stmt = $conn->prepare("UPDATE groups SET name = ?, image_url = ?, class = ? WHERE id = ?");
-    if (!$stmt) jsonError('Prepare failed: ' . $conn->error);
+    // =========================
+    $stmt = $conn->prepare("UPDATE groups SET name=?, image_url=?, class=? WHERE id=?");
     $stmt->bind_param("sssi", $name, $file_path, $class, $group_id);
 
     if (!$stmt->execute()) {
@@ -62,9 +52,9 @@ function updateGroup($conn, $data) {
     }
     $stmt->close();
 
-    // ============================
+    // =========================
     // Handle students
-    // ============================
+    // =========================
     $students = [];
     if (isset($data['students'])) {
         if (is_string($data['students'])) {
@@ -80,17 +70,12 @@ function updateGroup($conn, $data) {
     if (!empty($students)) {
         $conn->begin_transaction();
         try {
-            // Delete old students
-            $stmt = $conn->prepare("DELETE FROM students WHERE group_id = ?");
-            if (!$stmt) jsonError('Prepare failed: ' . $conn->error);
+            $stmt = $conn->prepare("DELETE FROM students WHERE group_id=?");
             $stmt->bind_param("i", $group_id);
             $stmt->execute();
             $stmt->close();
 
-            // Insert new students
             $stmt = $conn->prepare("INSERT INTO students (name, student_number, group_id) VALUES (?, ?, ?)");
-            if (!$stmt) jsonError('Prepare failed: ' . $conn->error);
-
             foreach ($students as $student) {
                 if (!isset($student['name'], $student['student_number'])) continue;
                 $stmt->bind_param("ssi", $student['name'], $student['student_number'], $group_id);
@@ -104,5 +89,5 @@ function updateGroup($conn, $data) {
         }
     }
 
-    echo json_encode(['message' => 'Group updated successfully.']);
+    echo json_encode(['message' => 'Group updated successfully.', 'image_url' => $file_path]);
 }
