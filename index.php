@@ -20,6 +20,7 @@ $allowedOrigins = [
     'https://creative-coding.interpol.sd-lab.nl',
     // Update with student projects 
     'https://088484.stu.sd-lab.nl',
+    'https://cp-webshop.sd-lab.nl'
 ];
 
 if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowedOrigins)) {
