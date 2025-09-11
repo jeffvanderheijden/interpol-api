@@ -31,7 +31,7 @@ function getAdditionalStudentData($conn, $params) {
         $student_id = (int) $params['student_id']; // Cast to integer for security
 
         // Use prepared statements to prevent SQL injection
-        $sql = "SELECT s.student_number, s.name, s.image_url, g.name AS group_name
+        $sql = "SELECT s.student_number, s.name, g.image_url AS image_url, g.name AS group_name
                 FROM students s
                 LEFT JOIN groups g ON s.group_id = g.id
                 WHERE s.student_number = ?";
