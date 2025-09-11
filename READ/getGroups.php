@@ -124,14 +124,22 @@ function getGroupsByClass($conn, $params) {
         return json_encode(['error' => 'Class parameter missing']);
     }
 
-    $sql = "SELECT id, name FROM groups WHERE class = ?";
+    // Voeg % toe om alle subklassen mee te nemen
+    $classPrefix = $params['class'] . '%';
+
+    $sql = "SELECT id, name FROM groups WHERE class LIKE ?";
     if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("s", $params['class']);
+        $stmt->bind_param("s", $classPrefix);
         $stmt->execute();
         $result = $stmt->get_result();
 
         $groups = [];
         while ($row = $result->fetch_assoc()) {
+            // Optioneel: punten ophalen voor deze groep
+            $pointsResult = $conn->query("SELECT SUM(points) as total_points FROM group_points WHERE group_id = {$row['id']}");
+            $pointsRow = $pointsResult->fetch_assoc();
+            $row['points'] = $pointsRow['total_points'] ?? 0;
+
             $groups[] = $row;
         }
 
@@ -147,3 +155,4 @@ function getGroupsByClass($conn, $params) {
         return json_encode(['error' => 'Failed to retrieve groups by class']);
     }
 }
+
