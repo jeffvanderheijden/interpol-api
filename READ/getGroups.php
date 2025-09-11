@@ -3,7 +3,8 @@
 // ============================
 // Gets all student groups
 // ============================
-function getGroups($conn) {
+function getGroups($conn)
+{
     $sql = "SELECT id, name, class, image_url FROM groups"; // Select specific columns as needed
 
     if ($stmt = $conn->prepare($sql)) {
@@ -31,7 +32,8 @@ function getGroups($conn) {
 // ============================
 // Gets student groups by ID
 // ============================
-function getGroupById($conn, $params) {
+function getGroupById($conn, $params)
+{
     if (!isset($params['id']) || !is_numeric($params['id'])) {
         return json_encode(['error' => 'Invalid or missing ID parameter']);
     }
@@ -59,7 +61,8 @@ function getGroupById($conn, $params) {
 // ============================
 // Get points by group id
 // ============================
-function getPointsByGroupId($conn, $params) {
+function getPointsByGroupId($conn, $params)
+{
     if (!isset($params['id']) || !is_numeric($params['id'])) {
         return json_encode(['error' => 'Invalid or missing ID parameter']);
     }
@@ -87,7 +90,8 @@ function getPointsByGroupId($conn, $params) {
 // ============================
 // Get top 3 groups by points
 // ============================
-function getTopThreeGroups($conn) {
+function getTopThreeGroups($conn)
+{
     $sql = "SELECT group_id, SUM(points) AS total_points
             FROM group_challenges
             GROUP BY group_id
@@ -119,7 +123,8 @@ function getTopThreeGroups($conn) {
 // ============================
 // Get groups by class
 // ============================
-function getGroupsByClass($conn, $params) {
+function getGroupsByClass($conn, $params)
+{
     if (!isset($params['class'])) {
         return json_encode(['error' => 'Class parameter missing']);
     }
@@ -127,13 +132,13 @@ function getGroupsByClass($conn, $params) {
     $classPrefix = $params['class'] . '%';
 
     $sql = "
-        SELECT g.id, g.name, g.class,
-               IFNULL(SUM(gc.points),0) AS points
-        FROM groups g
-        LEFT JOIN group_challenges gc ON gc.group_id = g.id AND gc.completed = 1
-        WHERE g.class LIKE ?
-        GROUP BY g.id, g.name, g.class
-    ";
+    SELECT g.id, g.name, g.class,
+           IFNULL(SUM(IFNULL(gc.points,0)),0) AS points
+    FROM groups g
+    LEFT JOIN group_challenges gc ON gc.group_id = g.id
+    WHERE g.class LIKE ?
+    GROUP BY g.id, g.name, g.class
+";
 
     if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param("s", $classPrefix);
@@ -157,5 +162,3 @@ function getGroupsByClass($conn, $params) {
         return json_encode(['error' => 'Failed to retrieve groups by class']);
     }
 }
-
-
