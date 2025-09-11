@@ -128,7 +128,7 @@ function getGroupsByClass($conn, $params) {
 
     $sql = "
         SELECT g.id, g.name, g.class,
-               IFNULL(SUM(gc.points),0) - IFNULL(SUM(gc.point_deduction),0) AS points
+               IFNULL(SUM(gc.points),0) AS points
         FROM groups g
         LEFT JOIN group_challenges gc ON gc.group_id = g.id AND gc.completed = 1
         WHERE g.class LIKE ?
@@ -157,4 +157,5 @@ function getGroupsByClass($conn, $params) {
         return json_encode(['error' => 'Failed to retrieve groups by class']);
     }
 }
+
 
