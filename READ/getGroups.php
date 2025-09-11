@@ -124,10 +124,17 @@ function getGroupsByClass($conn, $params) {
         return json_encode(['error' => 'Class parameter missing']);
     }
 
-    // Voeg % toe om alle subklassen mee te nemen
     $classPrefix = $params['class'] . '%';
 
-    $sql = "SELECT id, name FROM groups WHERE class LIKE ?";
+    $sql = "
+        SELECT g.id, g.name, g.class,
+               IFNULL(SUM(gc.points),0) - IFNULL(SUM(gc.point_deduction),0) AS points
+        FROM groups g
+        LEFT JOIN group_challenges gc ON gc.group_id = g.id AND gc.completed = 1
+        WHERE g.class LIKE ?
+        GROUP BY g.id, g.name, g.class
+    ";
+
     if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param("s", $classPrefix);
         $stmt->execute();
@@ -135,11 +142,6 @@ function getGroupsByClass($conn, $params) {
 
         $groups = [];
         while ($row = $result->fetch_assoc()) {
-            // Optioneel: punten ophalen voor deze groep
-            $pointsResult = $conn->query("SELECT SUM(points) as total_points FROM group_points WHERE group_id = {$row['id']}");
-            $pointsRow = $pointsResult->fetch_assoc();
-            $row['points'] = $pointsRow['total_points'] ?? 0;
-
             $groups[] = $row;
         }
 
